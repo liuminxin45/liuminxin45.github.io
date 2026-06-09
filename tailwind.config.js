@@ -5,6 +5,12 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        ink: '#080D12',
+        slate: '#B8C2CC',
+        'slate-strong': '#F1F5F8',
+        'slate-muted': '#7D8A96',
+        cyan: '#63D8F2',
+        steel: '#17212B',
         'void-black': '#050505',
         'grid-charcoal': '#121212',
         'lcd-ash': '#BDC3C7',
@@ -58,6 +64,7 @@ module.exports = {
       },
       boxShadow: {
         xs: "0 1px 2px 0 rgb(0 0 0 / 0.05)",
+        soft: '0 18px 70px rgba(0, 0, 0, 0.34)',
         'pixel-btn': '0 6px 0 #1a1a1a',
         'pixel-btn-hover': '0 3px 0 #1a1a1a',
         'pixel-btn-active': '0 0px 0 #1a1a1a',

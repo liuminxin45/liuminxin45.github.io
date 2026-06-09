@@ -1,140 +1,33 @@
-import { useRef, useEffect } from 'react'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import PixelButton from '../components/PixelButton'
-import TiltWidgetBox from '../components/TiltWidgetBox'
+import { ArrowUpRight, Github, Mail } from 'lucide-react'
 
-gsap.registerPlugin(ScrollTrigger)
+const links = [
+  { label: 'GitHub', href: 'https://github.com/liuminxin45', icon: Github },
+  { label: '邮件', href: 'mailto:384829308@qq.com', icon: Mail },
+]
 
 export default function FooterSection() {
-  const sectionRef = useRef<HTMLDivElement>(null)
-  const buttonsRef = useRef<HTMLDivElement>(null)
-  const widgetRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const buttons = buttonsRef.current
-    const widget = widgetRef.current
-    if (!buttons || !widget) return
-
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        buttons.children,
-        { y: 40, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.7,
-          stagger: 0.1,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: buttons,
-            start: 'top 85%',
-            toggleActions: 'play none none none',
-          },
-        }
-      )
-
-      gsap.fromTo(
-        widget,
-        { y: 60, opacity: 0, rotateZ: -5 },
-        {
-          y: 0,
-          opacity: 1,
-          rotateZ: 0,
-          duration: 1,
-          ease: 'back.out(1.5)',
-          scrollTrigger: {
-            trigger: widget,
-            start: 'top 90%',
-            toggleActions: 'play none none none',
-          },
-        }
-      )
-    }, sectionRef.current!)
-
-    return () => ctx.revert()
-  }, [])
-
   return (
-    <section
-      id="contact"
-      ref={sectionRef}
-      className="relative w-full"
-      style={{ zIndex: 3, background: '#050505' }}
-    >
-      {/* Pixel chessboard floor */}
-      <div
-        className="w-full h-[40vh] pixel-grid-bg relative overflow-hidden"
-        style={{
-          backgroundImage: `
-            linear-gradient(45deg, #121212 25%, transparent 25%),
-            linear-gradient(-45deg, #121212 25%, transparent 25%),
-            linear-gradient(45deg, transparent 75%, #121212 75%),
-            linear-gradient(-45deg, transparent 75%, #121212 75%)
-          `,
-          backgroundSize: '32px 32px',
-          backgroundPosition: '0 0, 0 16px, 16px -16px, -16px 0px',
-        }}
-      >
-        {/* Fade from top */}
-        <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-void-black to-transparent" />
-
-        {/* Center buttons */}
-        <div
-          ref={buttonsRef}
-          className="absolute inset-0 flex items-center justify-center gap-6 md:gap-10"
-        >
-          <PixelButton href="https://github.com" variant="primary" size="lg" glowOnHover>
-            GITHUB
-          </PixelButton>
-          <PixelButton href="mailto:hello@example.com" variant="secondary" size="lg" glowOnHover>
-            EMAIL
-          </PixelButton>
-          <PixelButton href="#" variant="outline" size="lg" glowOnHover>
-            RESUME
-          </PixelButton>
-        </div>
-      </div>
-
-      {/* Bottom footer area */}
-      <div className="section-padding py-12 relative">
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
-          {/* Left - copyright and info */}
-          <div className="space-y-2">
-            <p className="font-mono text-[9px] tracking-[0.3em] text-lcd-ash/30">
-              &copy; {new Date().getFullYear()} PIXEL GRAVITY FIELD
-            </p>
-            <p className="font-mono text-[9px] tracking-[0.2em] text-lcd-ash/20">
-              BUILT WITH REACT + THREE.JS + TAILWIND
-            </p>
-          </div>
-
-          {/* Center - back to top */}
-          <button
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="font-mono text-[9px] tracking-[0.3em] text-lcd-ash/30 hover:text-cyan-boot/60 transition-colors duration-300"
-          >
-            {'[ ↑ BACK TO TOP ]'}
-          </button>
-
-          {/* Right - tilt widget box */}
-          <div ref={widgetRef} className="hidden md:block">
-            <TiltWidgetBox width="200px" className="py-4 px-5">
-              <div className="font-mono text-center">
-                <div className="text-[8px] tracking-[0.4em] text-cyan-boot/40 mb-1">
-                  {'// STATUS'}
-                </div>
-                <div className="text-xs text-highlight-silver tracking-wider">
-                  HELLO WORLD
-                </div>
-                <div className="text-[7px] text-lcd-ash/30 mt-1">
-                  {'<System.Operational />'}
-                </div>
-              </div>
-            </TiltWidgetBox>
+    <footer id="contact" className="footer-section">
+      <div className="section-shell">
+        <div className="footer-card">
+          <p className="soft-label">联系</p>
+          <h2>如果你想继续了解我，可以从这些地方找到我。</h2>
+          <div className="footer-links">
+            {links.map(link => (
+              <a key={link.label} href={link.href} target={link.href.startsWith('http') ? '_blank' : undefined} rel="noreferrer">
+                <link.icon size={18} />
+                {link.label}
+                <ArrowUpRight size={16} />
+              </a>
+            ))}
           </div>
         </div>
+
+        <div className="footer-bottom">
+          <span>© {new Date().getFullYear()} 刘民心</span>
+          <span>React + Tailwind 构建，部署在 Vercel。</span>
+        </div>
       </div>
-    </section>
+    </footer>
   )
 }

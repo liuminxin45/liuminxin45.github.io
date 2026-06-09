@@ -1,82 +1,84 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
+import { Link, useLocation } from 'react-router'
+import { Github, Mail } from 'lucide-react'
 
-interface NavigationProps {
-  lenisRef: React.MutableRefObject<any>
-}
+const navItems = [
+  { id: 'home', label: '你好' },
+  { id: 'now', label: '近况' },
+  { id: 'builds', label: '入口' },
+  { id: 'notes', label: '记录' },
+  { id: 'contact', label: '联系' },
+]
 
-export default function Navigation({ lenisRef }: NavigationProps) {
+export default function Navigation() {
   const [scrolled, setScrolled] = useState(false)
-  const [activeSection, setActiveSection] = useState('hero')
-  const navRef = useRef<HTMLElement>(null)
-
-  const navItems = [
-    { id: 'hero', label: 'HOME' },
-    { id: 'about', label: 'WHOAMI' },
-    { id: 'timeline', label: 'TIMELINE' },
-    { id: 'projects', label: 'PROJECTS' },
-    { id: 'contact', label: 'CONTACT' },
-  ]
+  const [activeSection, setActiveSection] = useState('home')
+  const location = useLocation()
+  const isHome = location.pathname === '/'
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 100)
-    }
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+      setScrolled(window.scrollY > 20)
+      if (!isHome) {
+        setActiveSection('')
+        return
+      }
 
-  // Track active section
-  useEffect(() => {
-    const sections = navItems.map(item => document.getElementById(item.id))
-    const handleScroll = () => {
-      const scrollPos = window.scrollY + window.innerHeight * 0.3
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const section = sections[i]
-        if (section && section.offsetTop <= scrollPos) {
-          setActiveSection(navItems[i].id)
+      const triggerLine = window.scrollY + window.innerHeight * 0.3
+
+      for (let index = navItems.length - 1; index >= 0; index -= 1) {
+        const section = document.getElementById(navItems[index].id)
+        if (section && section.offsetTop <= triggerLine) {
+          setActiveSection(section.id)
           break
         }
       }
     }
+
+    handleScroll()
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+  }, [isHome])
 
-  const scrollTo = (id: string) => {
-    if (lenisRef.current) {
-      lenisRef.current.scrollTo(`#${id}`, { duration: 2 })
-    } else {
-      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
-    }
-  }
+  const toSection = (id: string) => (isHome ? `#${id}` : `/#${id}`)
 
   return (
-    <nav
-      ref={navRef}
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
-        scrolled ? 'bg-void-black/60 backdrop-blur-md' : 'bg-transparent'
-      }`}
-    >
-      <div className="section-padding flex items-center justify-between h-14">
-        <div className="font-display font-bold text-xs tracking-[0.3em] text-highlight-silver">
-          PIXEL FIELD
+    <>
+      <nav className={`site-nav ${scrolled ? 'is-scrolled' : ''}`}>
+        <div className="section-shell nav-inner">
+          <Link to="/" className="brand-link" aria-label="回到首页">
+            <span>刘民心</span>
+          </Link>
+
+          <div className="desktop-links">
+            {navItems.map(item => (
+              <a key={item.id} href={toSection(item.id)} className={activeSection === item.id ? 'active' : ''}>
+                {item.label}
+              </a>
+            ))}
+            <Link to="/work" className={location.pathname === '/work' ? 'active' : ''}>
+              工作页
+            </Link>
+          </div>
+
+          <div className="nav-icons">
+            <a href="https://github.com/liuminxin45" target="_blank" rel="noreferrer" aria-label="GitHub">
+              <Github size={17} />
+            </a>
+            <a href="mailto:384829308@qq.com" aria-label="发送邮件">
+              <Mail size={17} />
+            </a>
+          </div>
         </div>
-        <div className="hidden md:flex items-center gap-8">
-          {navItems.map(item => (
-            <button
-              key={item.id}
-              onClick={() => scrollTo(item.id)}
-              className={`font-mono text-[10px] tracking-[0.2em] uppercase transition-all duration-300 ${
-                activeSection === item.id
-                  ? 'text-cyan-boot'
-                  : 'text-lcd-ash/50 hover:text-lcd-ash'
-              }`}
-            >
-              {item.label}
-            </button>
-          ))}
-        </div>
+      </nav>
+
+      <div className="mobile-dock">
+        {navItems.slice(0, 4).map(item => (
+          <a key={item.id} href={toSection(item.id)} className={activeSection === item.id ? 'active' : ''}>
+            {item.label}
+          </a>
+        ))}
       </div>
-    </nav>
+    </>
   )
 }
