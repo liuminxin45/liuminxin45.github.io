@@ -5,9 +5,8 @@ import { inspectAttr } from 'kimi-plugin-inspect-react'
 
 // https://vite.dev/config/
 export default defineConfig({
-  // GitHub Pages: use './' for relative paths (works with any repo name)
-  // If using a custom domain, change to '/'
-  base: './',
+  // GitHub Pages user site is served from the domain root.
+  base: '/',
   plugins: [inspectAttr(), react()],
   server: {
     port: 3000,
