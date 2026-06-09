@@ -1,73 +1,59 @@
-import { ArrowUpRight, BriefcaseBusiness, Camera, NotebookPen, Wrench } from 'lucide-react'
+import { photos } from '@/data/photos.generated'
 
-const builds = [
+const entries = [
   {
-    icon: BriefcaseBusiness,
     title: '工作相关',
-    cn: '一个很薄的工作页',
-    text: '如果你确实想了解我做过的 SDK、客户端和自动化测试，可以点进去看简版。',
-    meta: ['主动查看', '不放首页', '简版'],
+    text: '保留一页很薄的背景信息，给确实想了解项目经验、技术栈或合作方式的人。',
     href: '/work',
+    status: '可查看',
   },
   {
-    icon: NotebookPen,
     title: '文字',
-    cn: '想写下来的笔记',
-    text: '技术、工具、一些踩坑，还有不一定有用但我想留住的观察。',
-    meta: ['待补充', '笔记', '归档'],
+    text: '以后会放一些笔记、问题整理和不一定成体系的观察。',
+    status: '待补',
   },
   {
-    icon: Camera,
-    title: '相册',
-    cn: '一些生活片刻',
-    text: '照片还没整理好，先留一个入口。希望以后不是只有工作内容。',
-    meta: ['照片待补', '深圳', '生活'],
+    title: '摄影',
+    text: '一些生活片段。希望这个地方以后不只有工作和技术。',
+    href: '#photography',
+    status: '待补',
   },
   {
-    icon: Wrench,
     title: '工具箱',
-    cn: '常用工具与配置',
-    text: '开发工具、效率软件、桌面环境和一些长期用下来的设置。',
-    meta: ['待补充', '工具', '配置'],
+    text: '常用工具、开发环境和一些长期保留下来的配置。',
+    status: '待补',
   },
 ]
+
+const visibleEntries = entries.filter(item => item.title !== '摄影' || photos.length > 0)
 
 export default function ProjectsSection() {
   return (
     <section id="builds" className="section-block">
       <div className="section-shell">
-        <div className="section-heading compact">
+        <div className="section-heading">
           <p className="soft-label">入口</p>
-          <h2>先放几个入口，内容慢慢长出来。</h2>
+          <h2>几个暂时的入口。</h2>
         </div>
 
-        <div className="build-grid">
-          {builds.map(item => {
+        <div className="entry-list">
+          {visibleEntries.map(item => {
             const content = (
               <>
-                <div className="build-icon">
-                  <item.icon size={24} />
+                <div>
+                  <h3>{item.title}</h3>
+                  <p>{item.text}</p>
                 </div>
-                <p className="build-title">{item.title}</p>
-                <h3>
-                  {item.cn}
-                  {item.href ? <ArrowUpRight size={18} /> : null}
-                </h3>
-                <p>{item.text}</p>
-                <div className="mini-tags">
-                  {item.meta.map(meta => (
-                    <span key={meta}>{meta}</span>
-                  ))}
-                </div>
+                <span>{item.status}</span>
               </>
             )
 
             return item.href ? (
-              <a className="build-card linked-card" key={item.title} href={item.href}>
+              <a className="entry-row" key={item.title} href={item.href}>
                 {content}
               </a>
             ) : (
-              <article className="build-card" key={item.title}>
+              <article className="entry-row" key={item.title}>
                 {content}
               </article>
             )

@@ -4,8 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
+    "photos": "node scripts/generate-photo-manifest.mjs",
+    "dev": "npm run photos && vite",
+    "build": "npm run photos && tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },

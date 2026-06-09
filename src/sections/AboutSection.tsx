@@ -1,43 +1,37 @@
-import { Camera, NotebookPen, Sparkles } from 'lucide-react'
-
 const nowItems = [
   {
-    icon: NotebookPen,
-    title: '整理一些笔记',
-    text: '先从工作里反复遇到的问题开始写，之后也会放一些读书、工具和生活记录。',
+    title: '整理文字',
+    text: '先把一些反复想起的问题写下来。可能是技术，也可能是工具、阅读和日常观察。',
   },
   {
-    icon: Camera,
-    title: '补几张照片',
-    text: '工作台、城市、出门路上看到的东西。现在先留空，等素材整理好再放上来。',
+    title: '补充照片',
+    text: '工作台、城市、路上看到的东西。现在先留空，等素材整理好再慢慢补。',
   },
   {
-    icon: Sparkles,
-    title: '慢慢搭这个小站',
-    text: '先把页面搭成舒服的样子，再补内容。不急着一次性讲完所有事情。',
+    title: '调整这个小站',
+    text: '先让页面变得舒服、清楚，再决定哪些内容值得留下。不急着一次讲完。',
   },
 ]
 
 export default function AboutSection() {
   return (
-    <section id="now" className="section-block now-section">
+    <section id="now" className="section-block">
       <div className="section-shell">
-        <div className="section-heading compact">
+        <div className="section-heading">
           <p className="soft-label">近况</p>
-          <h2>最近想把这个地方慢慢收拾出来。</h2>
+          <h2>最近在整理这个地方。</h2>
         </div>
 
-        <div className="now-grid">
+        <div className="simple-list">
           {nowItems.map(item => (
-            <article className="plain-card" key={item.title}>
-              <item.icon size={22} />
+            <article className="text-row" key={item.title}>
               <h3>{item.title}</h3>
               <p>{item.text}</p>
             </article>
           ))}
         </div>
 
-        <div className="note-strip">
+        <div className="quiet-note">
           <span>想补充的内容</span>
           <p>头像、工作台照片、文章归档、常用工具、读书/游戏/城市记录。现在先留白，不用假装已经很完整。</p>
         </div>

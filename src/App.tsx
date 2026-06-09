@@ -4,10 +4,13 @@ import Navigation from './sections/Navigation'
 import HeroSection from './sections/HeroSection'
 import AboutSection from './sections/AboutSection'
 import ProjectsSection from './sections/ProjectsSection'
+import PhotoSection from './sections/PhotoSection'
 import TimelineSection from './sections/TimelineSection'
 import FooterSection from './sections/FooterSection'
 import { initAnalytics } from './lib/analytics'
 import WorkPage from './pages/Work'
+import PhotographyPage from './pages/Photography'
+import PhotoArticlePage from './pages/PhotoArticle'
 
 function App() {
   useEffect(() => {
@@ -27,12 +30,15 @@ function App() {
                 <HeroSection />
                 <AboutSection />
                 <ProjectsSection />
+                <PhotoSection />
                 <TimelineSection />
                 <FooterSection />
               </main>
             }
           />
           <Route path="/work" element={<WorkPage />} />
+          <Route path="/photography" element={<PhotographyPage />} />
+          <Route path="/photography/:slug" element={<PhotoArticlePage />} />
         </Routes>
       </BrowserRouter>
     </div>

@@ -1,14 +1,23 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router'
 import { Github, Mail } from 'lucide-react'
+import { photos } from '@/data/photos.generated'
 
-const navItems = [
+const baseNavItems = [
   { id: 'home', label: '你好' },
   { id: 'now', label: '近况' },
   { id: 'builds', label: '入口' },
   { id: 'notes', label: '记录' },
   { id: 'contact', label: '联系' },
 ]
+
+const navItems = photos.length > 0
+  ? [
+      ...baseNavItems.slice(0, 3),
+      { id: 'photography', label: '摄影' },
+      ...baseNavItems.slice(3),
+    ]
+  : baseNavItems
 
 export default function Navigation() {
   const [scrolled, setScrolled] = useState(false)
