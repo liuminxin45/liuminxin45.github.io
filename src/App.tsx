@@ -11,6 +11,8 @@ import { initAnalytics } from './lib/analytics'
 import WorkPage from './pages/Work'
 import PhotographyPage from './pages/Photography'
 import PhotoArticlePage from './pages/PhotoArticle'
+import RecordsPage from './pages/Records'
+import RecordArticlePage from './pages/RecordArticle'
 
 function App() {
   useEffect(() => {
@@ -37,6 +39,8 @@ function App() {
             }
           />
           <Route path="/work" element={<WorkPage />} />
+          <Route path="/records" element={<RecordsPage />} />
+          <Route path="/records/:slug" element={<RecordArticlePage />} />
           <Route path="/photography" element={<PhotographyPage />} />
           <Route path="/photography/:slug" element={<PhotoArticlePage />} />
         </Routes>

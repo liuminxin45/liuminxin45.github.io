@@ -1,6 +1,14 @@
 import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import {
+  dateFromFile,
+  excerptFromMarkdown,
+  markdownToHtml,
+  parseFrontmatter,
+  slugFromFile,
+  sortKey,
+} from './markdown-utils.mjs'
 
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const photosDir = path.join(rootDir, 'public', 'photos')
@@ -30,107 +38,6 @@ function titleFromFile(file) {
     .replace(/^\d{4}[-_.]\d{2}[-_.]\d{2}[-_\s]*/, '')
     .replace(/[-_]+/g, ' ')
     .trim()
-}
-
-function escapeHtml(value) {
-  return String(value)
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#39;')
-}
-
-function inlineMarkdown(value) {
-  return escapeHtml(value)
-    .replace(/`([^`]+)`/g, '<code>$1</code>')
-    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*([^*]+)\*/g, '<em>$1</em>')
-    .replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noreferrer">$1</a>')
-}
-
-function parseFrontmatter(markdown) {
-  if (!markdown.startsWith('---\n')) {
-    return { data: {}, body: markdown }
-  }
-
-  const end = markdown.indexOf('\n---', 4)
-  if (end === -1) {
-    return { data: {}, body: markdown }
-  }
-
-  const data = {}
-  const raw = markdown.slice(4, end).trim()
-  for (const line of raw.split('\n')) {
-    const match = line.match(/^([A-Za-z0-9_-]+):\s*(.*)$/)
-    if (match) {
-      data[match[1]] = match[2].replace(/^['"]|['"]$/g, '').trim()
-    }
-  }
-
-  return { data, body: markdown.slice(end + 4).trim() }
-}
-
-function markdownToHtml(markdown) {
-  const blocks = markdown.split(/\n{2,}/).map(block => block.trim()).filter(Boolean)
-
-  return blocks.map(block => {
-    if (block.startsWith('### ')) {
-      return `<h3>${inlineMarkdown(block.slice(4))}</h3>`
-    }
-    if (block.startsWith('## ')) {
-      return `<h2>${inlineMarkdown(block.slice(3))}</h2>`
-    }
-    if (block.startsWith('# ')) {
-      return `<h1>${inlineMarkdown(block.slice(2))}</h1>`
-    }
-    if (block.startsWith('> ')) {
-      return `<blockquote>${inlineMarkdown(block.replace(/^>\s?/gm, ' '))}</blockquote>`
-    }
-    if (/^[-*]\s/m.test(block)) {
-      const items = block
-        .split('\n')
-        .filter(line => /^[-*]\s/.test(line))
-        .map(line => `<li>${inlineMarkdown(line.replace(/^[-*]\s/, ''))}</li>`)
-        .join('')
-      return `<ul>${items}</ul>`
-    }
-
-    return `<p>${inlineMarkdown(block).replace(/\n/g, '<br />')}</p>`
-  }).join('\n')
-}
-
-function excerptFromMarkdown(markdown) {
-  return markdown
-    .replace(/^---[\s\S]*?---/, '')
-    .replace(/^#+\s+/gm, '')
-    .replace(/[*_`>#-]/g, '')
-    .split('\n')
-    .map(line => line.trim())
-    .filter(Boolean)
-    .join(' ')
-    .slice(0, 120)
-}
-
-function slugFromFile(file) {
-  return path
-    .basename(file, path.extname(file))
-    .toLowerCase()
-    .replace(/[^a-z0-9\u4e00-\u9fa5]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-}
-
-function dateFromFile(file) {
-  const match = file.match(/(\d{4})[-_.](\d{2})[-_.](\d{2})/)
-  return match ? `${match[1]}-${match[2]}-${match[3]}` : ''
-}
-
-function sortKey(date, file) {
-  if (date) {
-    return date.replaceAll('.', '-')
-  }
-
-  return dateFromFile(file) || '0000-00-00'
 }
 
 function readMarkdownFor(file) {

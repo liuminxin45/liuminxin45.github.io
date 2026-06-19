@@ -1,3 +1,6 @@
+import { Link } from 'react-router'
+import { records } from '@/data/records.generated'
+
 const notes = [
   {
     title: '接口边界这件事',
@@ -20,21 +23,34 @@ const moments = [
 ]
 
 export default function TimelineSection() {
+  const previewRecords = records.slice(0, 3)
+  const visibleNotes = previewRecords.length > 0 ? previewRecords : notes
+
   return (
     <section id="notes" className="section-block">
       <div className="section-shell split-section">
         <div>
-          <div className="section-heading">
-            <p className="soft-label">记录</p>
-            <h2>一些可能会写的东西。</h2>
+          <div className="section-heading with-link">
+            <div>
+              <p className="soft-label">记录</p>
+              <h2>{previewRecords.length > 0 ? '最近写下来的东西。' : '一些可能会写的东西。'}</h2>
+            </div>
+            {previewRecords.length > 0 ? <Link to="/records">查看更多</Link> : null}
           </div>
 
           <div className="simple-list">
-            {notes.map(note => (
-              <article className="text-row" key={note.title}>
-                <h3>{note.title}</h3>
-                <p>{note.text}</p>
-              </article>
+            {visibleNotes.map(note => (
+              'slug' in note ? (
+                <Link className="text-row" key={note.slug} to={`/records/${note.slug}`}>
+                  <h3>{note.title}</h3>
+                  <p>{note.excerpt}</p>
+                </Link>
+              ) : (
+                <article className="text-row" key={note.title}>
+                  <h3>{note.title}</h3>
+                  <p>{note.text}</p>
+                </article>
+              )
             ))}
           </div>
         </div>
