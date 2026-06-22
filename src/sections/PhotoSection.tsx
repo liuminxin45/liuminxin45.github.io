@@ -11,7 +11,6 @@ export default function PhotoSection() {
         <div className="section-heading with-link">
           <div>
             <h2>摄影</h2>
-            <span>{photos.length} 张</span>
           </div>
           {photos.length > 0 ? <Link to="/photography" viewTransition>全部摄影 →</Link> : null}
         </div>

@@ -1,5 +1,4 @@
 import { Link } from 'react-router'
-import { ArrowLeft } from 'lucide-react'
 import { photos } from '@/data/photos.generated'
 import EmptyState from '@/components/EmptyState'
 
@@ -7,14 +6,8 @@ export default function PhotographyPage() {
   return (
     <main className="photography-page">
       <div className="section-shell">
-        <Link className="back-link" to="/" viewTransition>
-          <ArrowLeft size={17} />
-          回到首页
-        </Link>
-
         <section className="page-hero">
           <h1>摄影</h1>
-          <p>{photos.length} 张</p>
         </section>
 
         {photos.length > 0 ? (

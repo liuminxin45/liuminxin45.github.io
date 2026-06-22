@@ -11,6 +11,7 @@ import PhotographyPage from './pages/Photography'
 import PhotoArticlePage from './pages/PhotoArticle'
 import RecordsPage from './pages/Records'
 import RecordArticlePage from './pages/RecordArticle'
+import WorksPage from './pages/Works'
 
 function HomePage() {
   return (
@@ -41,6 +42,7 @@ function AnimatedRoutes() {
       <Routes location={location}>
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<AboutPage />} />
+        <Route path="/works" element={<WorksPage />} />
         <Route path="/blogs" element={<RecordsPage />} />
         <Route path="/blogs/:slug" element={<RecordArticlePage />} />
         <Route path="/records" element={<LegacyRecordRedirect />} />

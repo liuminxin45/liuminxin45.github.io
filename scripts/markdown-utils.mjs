@@ -10,25 +10,22 @@ export function escapeHtml(value) {
 }
 
 export function parseFrontmatter(markdown) {
-  if (!markdown.startsWith('---\n')) {
-    return { data: {}, body: markdown }
-  }
-
-  const end = markdown.indexOf('\n---', 4)
-  if (end === -1) {
-    return { data: {}, body: markdown }
+  const content = String(markdown).replace(/^\uFEFF/, '')
+  const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/)
+  if (!match) {
+    return { data: {}, body: content.replace(/\r\n?/g, '\n') }
   }
 
   const data = {}
-  const raw = markdown.slice(4, end).trim()
-  for (const line of raw.split('\n')) {
+  const raw = match[1].trim()
+  for (const line of raw.split(/\r?\n/)) {
     const match = line.match(/^([A-Za-z0-9_-]+):\s*(.*)$/)
     if (match) {
       data[match[1]] = match[2].replace(/^['"]|['"]$/g, '').trim()
     }
   }
 
-  return { data, body: markdown.slice(end + 4).trim() }
+  return { data, body: content.slice(match[0].length).replace(/\r\n?/g, '\n').trim() }
 }
 
 export function slugFromFile(file) {
@@ -53,7 +50,8 @@ export function sortKey(date, file) {
 }
 
 export function excerptFromMarkdown(markdown) {
-  return markdown
+  return String(markdown)
+    .replace(/\r\n?/g, '\n')
     .replace(/^---[\s\S]*?---/, '')
     .replace(/```[\s\S]*?```/g, '')
     .replace(/!\[[^\]]*]\([^)]+\)/g, '')
@@ -131,7 +129,8 @@ function renderList(block, assetBase) {
 
 export function markdownToHtml(markdown, options = {}) {
   const assetBase = options.assetBase ?? ''
-  const blocks = markdown.split(/\n{2,}/).map(block => block.trim()).filter(Boolean)
+  const normalized = String(markdown).replace(/\r\n?/g, '\n')
+  const blocks = normalized.split(/\n{2,}/).map(block => block.trim()).filter(Boolean)
   const html = []
 
   for (const block of blocks) {

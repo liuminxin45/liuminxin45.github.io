@@ -4,6 +4,7 @@ import ThemeToggle from '@/components/ThemeToggle'
 const navItems = [
   { to: '/', label: '首页', end: true },
   { to: '/about', label: '关于我' },
+  { to: '/works', label: '造物' },
   { to: '/photography', label: '摄影' },
   { to: '/blogs', label: '博客' },
 ]
@@ -13,7 +14,7 @@ export default function Navigation() {
     <nav className="site-nav">
       <div className="site-container nav-inner">
         <div className="nav-left">
-          <Link to="/" className="brand-link" aria-label="回到首页">
+          <Link to="/" className="brand-link" aria-label="首页">
             刘民心
           </Link>
 

@@ -11,7 +11,6 @@ export default function TimelineSection() {
         <div className="section-heading with-link">
           <div>
             <h2>博客</h2>
-            <span>{records.length} 篇</span>
           </div>
           {previewRecords.length > 0 ? <Link to="/blogs" viewTransition>全部博客 →</Link> : null}
         </div>

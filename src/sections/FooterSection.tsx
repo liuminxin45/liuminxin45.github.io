@@ -3,6 +3,7 @@ import { Link } from 'react-router'
 const siteLinks = [
   { label: '首页', to: '/' },
   { label: '关于我', to: '/about' },
+  { label: '造物', to: '/works' },
   { label: '摄影', to: '/photography' },
   { label: '博客', to: '/blogs' },
 ]

@@ -1,6 +1,5 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router'
-import { ArrowLeft } from 'lucide-react'
 import { records } from '@/data/records.generated'
 import EmptyState from '@/components/EmptyState'
 
@@ -21,14 +20,8 @@ export default function RecordsPage() {
   return (
     <main className="records-page">
       <div className="section-shell">
-        <Link className="back-link" to="/" viewTransition>
-          <ArrowLeft size={17} />
-          回到首页
-        </Link>
-
         <section className="page-hero">
           <h1>博客</h1>
-          <p>{records.length} 篇</p>
         </section>
 
         {records.length > 0 ? (
