@@ -1,33 +1,13 @@
-import { useEffect, useState, type MouseEvent } from 'react'
+import { useState, type MouseEvent } from 'react'
 import { Link, useParams } from 'react-router'
-import { ArrowLeft, X } from 'lucide-react'
+import { ArrowLeft } from 'lucide-react'
+import ImageLightbox from '@/components/ImageLightbox'
 import { records } from '@/data/records.generated'
 
 export default function RecordArticlePage() {
   const { slug } = useParams()
   const record = records.find(item => item.slug === slug)
   const [lightboxImage, setLightboxImage] = useState<{ src: string; alt: string } | null>(null)
-
-  useEffect(() => {
-    if (!lightboxImage) {
-      return
-    }
-
-    const originalOverflow = document.body.style.overflow
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        setLightboxImage(null)
-      }
-    }
-
-    document.body.style.overflow = 'hidden'
-    window.addEventListener('keydown', handleKeyDown)
-
-    return () => {
-      document.body.style.overflow = originalOverflow
-      window.removeEventListener('keydown', handleKeyDown)
-    }
-  }, [lightboxImage])
 
   const openLightbox = (src: string, alt: string) => {
     setLightboxImage({ src, alt })
@@ -51,12 +31,12 @@ export default function RecordArticlePage() {
     return (
       <main className="records-page">
         <div className="section-shell">
-          <Link className="back-link" to="/records">
+          <Link className="back-link" to="/blogs" viewTransition>
             <ArrowLeft size={17} />
-            回到记录
+            回到博客
           </Link>
-          <section className="work-hero">
-            <p className="soft-label">记录</p>
+          <section className="page-hero">
+            <p className="soft-label">博客</p>
             <h1>没有找到这篇文章。</h1>
           </section>
         </div>
@@ -67,9 +47,9 @@ export default function RecordArticlePage() {
   return (
     <main className="record-article-page">
       <div className="section-shell">
-        <Link className="back-link" to="/records">
+        <Link className="back-link" to="/blogs" viewTransition>
           <ArrowLeft size={17} />
-          回到记录
+          回到博客
         </Link>
 
         <article className="record-article">
@@ -95,19 +75,7 @@ export default function RecordArticlePage() {
         </article>
       </div>
 
-      {lightboxImage ? (
-        <div className="image-lightbox" role="dialog" aria-modal="true" onClick={() => setLightboxImage(null)}>
-          <button
-            className="image-lightbox-close"
-            type="button"
-            aria-label="关闭图片预览"
-            onClick={() => setLightboxImage(null)}
-          >
-            <X size={22} />
-          </button>
-          <img src={lightboxImage.src} alt={lightboxImage.alt} onClick={event => event.stopPropagation()} />
-        </div>
-      ) : null}
+      {lightboxImage ? <ImageLightbox image={lightboxImage} onClose={() => setLightboxImage(null)} /> : null}
     </main>
   )
 }

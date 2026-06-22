@@ -1,23 +1,41 @@
+import { Link } from 'react-router'
+import { records } from '@/data/records.generated'
+import { photos } from '@/data/photos.generated'
+
 export default function HeroSection() {
+  const latestRecord = records[0]
+  const latestPhoto = photos[0]
+
   return (
-    <section id="home" className="hero-section">
-      <div className="section-shell">
-        <p className="soft-label">个人主页</p>
-        <h1>你好，我是刘民心。</h1>
+    <section className="hero-section">
+      <div className="site-container hero-grid">
         <div className="hero-copy">
-          <p>
-            这里会慢慢放一些我想留下来的东西：文字、项目入口、照片、工具，以及一些还没有完全整理好的生活片段。
-          </p>
-          <p>
-            我希望它更像一个安静的个人空间，而不是一份在线简历。工作相关的内容放在单独页面里，需要的时候再点进去看。
-          </p>
+          <h1>嗨! 朋友</h1>
+
+          <div className="hero-index" aria-label="最新内容">
+            {latestRecord ? (
+              <Link className="hero-index-row" to={`/blogs/${latestRecord.slug}`} viewTransition>
+                <span>博客</span>
+                <strong>{latestRecord.title}</strong>
+                {latestRecord.date ? <time>{latestRecord.date}</time> : null}
+              </Link>
+            ) : null}
+
+            {latestPhoto ? (
+              <Link className="hero-index-row" to={`/photography/${latestPhoto.slug}`} viewTransition>
+                <span>摄影</span>
+                <strong>{latestPhoto.title}</strong>
+                {latestPhoto.date ? <time>{latestPhoto.date}</time> : null}
+              </Link>
+            ) : null}
+          </div>
         </div>
-        <div className="hero-links" aria-label="常用入口">
-          <a href="#now">最近</a>
-          <a href="#builds">入口</a>
-          <a href="/work">工作相关</a>
-          <a href="mailto:384829308@qq.com">邮件</a>
-        </div>
+
+        {latestPhoto ? (
+          <Link className="hero-photo" to={`/photography/${latestPhoto.slug}`} viewTransition aria-label={latestPhoto.title}>
+            <img src={`${import.meta.env.BASE_URL}${latestPhoto.src}`} alt={latestPhoto.alt} />
+          </Link>
+        ) : null}
       </div>
     </section>
   )

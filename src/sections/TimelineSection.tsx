@@ -1,69 +1,36 @@
 import { Link } from 'react-router'
+import EmptyState from '@/components/EmptyState'
 import { records } from '@/data/records.generated'
 
-const notes = [
-  {
-    title: '接口边界这件事',
-    text: '想写写一些系统边界、调用体验和维护成本相关的观察。',
-  },
-  {
-    title: '桌面软件里的小问题',
-    text: '那些看起来不大、但会慢慢影响体验和稳定性的细节。',
-  },
-  {
-    title: '把工具做顺手',
-    text: '一些关于自动化、调试、桌面环境和日常工具的整理。',
-  },
-]
-
-const moments = [
-  '工作台照片',
-  '深圳的城市片段',
-  '书影音记录',
-]
-
 export default function TimelineSection() {
-  const previewRecords = records.slice(0, 3)
-  const visibleNotes = previewRecords.length > 0 ? previewRecords : notes
+  const previewRecords = records.slice(0, 5)
 
   return (
-    <section id="notes" className="section-block">
-      <div className="section-shell split-section">
-        <div>
-          <div className="section-heading with-link">
-            <div>
-              <p className="soft-label">记录</p>
-              <h2>{previewRecords.length > 0 ? '最近写下来的东西。' : '一些可能会写的东西。'}</h2>
-            </div>
-            {previewRecords.length > 0 ? <Link to="/records">查看更多</Link> : null}
+    <section id="blog-preview" className="section-block">
+      <div className="site-container">
+        <div className="section-heading with-link">
+          <div>
+            <h2>博客</h2>
+            <span>{records.length} 篇</span>
           </div>
-
-          <div className="simple-list">
-            {visibleNotes.map(note => (
-              'slug' in note ? (
-                <Link className="text-row" key={note.slug} to={`/records/${note.slug}`}>
-                  <h3>{note.title}</h3>
-                  <p>{note.excerpt}</p>
-                </Link>
-              ) : (
-                <article className="text-row" key={note.title}>
-                  <h3>{note.title}</h3>
-                  <p>{note.text}</p>
-                </article>
-              )
-            ))}
-          </div>
+          {previewRecords.length > 0 ? <Link to="/blogs" viewTransition>全部博客 →</Link> : null}
         </div>
 
-        <aside className="side-note" aria-label="生活片刻">
-          <p className="soft-label">片刻</p>
-          <h2>也留一点空给生活。</h2>
-          <ul>
-            {moments.map(moment => (
-              <li key={moment}>{moment}</li>
+        {previewRecords.length > 0 ? (
+          <div className="thought-list">
+            {previewRecords.map(record => (
+              <Link className="thought-row" key={record.slug} to={`/blogs/${record.slug}`} viewTransition>
+                <div>
+                  <h3>{record.title}</h3>
+                  {record.excerpt ? <p>{record.excerpt}</p> : null}
+                </div>
+                {record.date ? <time>{record.date}</time> : null}
+              </Link>
             ))}
-          </ul>
-        </aside>
+          </div>
+        ) : (
+          <EmptyState />
+        )}
       </div>
     </section>
   )

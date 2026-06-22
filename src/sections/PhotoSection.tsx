@@ -1,35 +1,36 @@
 import { Link } from 'react-router'
+import EmptyState from '@/components/EmptyState'
 import { photos } from '@/data/photos.generated'
 
-const previewPhotos = photos.slice(0, 5)
+const previewPhotos = photos.slice(0, 4)
 
 export default function PhotoSection() {
-  if (photos.length === 0) {
-    return null
-  }
-
   return (
-    <section id="photography" className="section-block photo-section">
-      <div className="section-shell">
+    <section id="photo-preview" className="section-block photo-section">
+      <div className="site-container">
         <div className="section-heading with-link">
           <div>
-            <p className="soft-label">摄影</p>
-            <h2>一些拍下来的片刻。</h2>
+            <h2>摄影</h2>
+            <span>{photos.length} 张</span>
           </div>
-          <Link to="/photography">查看更多</Link>
+          {photos.length > 0 ? <Link to="/photography" viewTransition>全部摄影 →</Link> : null}
         </div>
 
-        <div className="photo-grid">
-          {previewPhotos.map((photo, index) => (
-            <Link className={index === 0 ? 'photo-card is-featured' : 'photo-card'} key={photo.src} to={`/photography/${photo.slug}`}>
-              <img src={`${import.meta.env.BASE_URL}${photo.src}`} alt={photo.alt} loading="lazy" />
-              <span>
-                <strong>{photo.title}</strong>
-                {photo.place || photo.date ? <small>{[photo.place, photo.date].filter(Boolean).join(' · ')}</small> : null}
-              </span>
-            </Link>
-          ))}
-        </div>
+        {photos.length > 0 ? (
+          <div className="photo-grid">
+            {previewPhotos.map(photo => (
+              <Link className="photo-card" key={photo.src} to={`/photography/${photo.slug}`} viewTransition>
+                <img src={`${import.meta.env.BASE_URL}${photo.src}`} alt={photo.alt} loading="lazy" />
+                <span>
+                  <strong>{photo.title}</strong>
+                  {photo.place || photo.date ? <small>{[photo.place, photo.date].filter(Boolean).join(' · ')}</small> : null}
+                </span>
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <EmptyState rows={4} />
+        )}
       </div>
     </section>
   )

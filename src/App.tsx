@@ -1,20 +1,59 @@
 import { useEffect } from 'react'
-import { BrowserRouter, Route, Routes } from 'react-router'
+import { BrowserRouter, Navigate, Route, Routes, useLocation, useParams } from 'react-router'
 import Navigation from './sections/Navigation'
 import HeroSection from './sections/HeroSection'
-import AboutSection from './sections/AboutSection'
-import ProjectsSection from './sections/ProjectsSection'
 import PhotoSection from './sections/PhotoSection'
 import TimelineSection from './sections/TimelineSection'
 import FooterSection from './sections/FooterSection'
 import { initAnalytics } from './lib/analytics'
-import WorkPage from './pages/Work'
+import AboutPage from './pages/About'
 import PhotographyPage from './pages/Photography'
 import PhotoArticlePage from './pages/PhotoArticle'
 import RecordsPage from './pages/Records'
 import RecordArticlePage from './pages/RecordArticle'
 
-function App() {
+function HomePage() {
+  return (
+    <main>
+      <HeroSection />
+      <TimelineSection />
+      <PhotoSection />
+      <FooterSection />
+    </main>
+  )
+}
+
+function LegacyRecordRedirect() {
+  const { slug } = useParams()
+
+  return <Navigate to={slug ? `/blogs/${slug}` : '/blogs'} replace />
+}
+
+function AnimatedRoutes() {
+  const location = useLocation()
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+  }, [location.pathname])
+
+  return (
+    <div id="main-content" className="route-shell" key={location.pathname}>
+      <Routes location={location}>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/blogs" element={<RecordsPage />} />
+        <Route path="/blogs/:slug" element={<RecordArticlePage />} />
+        <Route path="/records" element={<LegacyRecordRedirect />} />
+        <Route path="/records/:slug" element={<LegacyRecordRedirect />} />
+        <Route path="/photography" element={<PhotographyPage />} />
+        <Route path="/photography/:slug" element={<PhotoArticlePage />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </div>
+  )
+}
+
+export default function App() {
   useEffect(() => {
     initAnalytics()
   }, [])
@@ -22,31 +61,13 @@ function App() {
   return (
     <div className="site-shell">
       <div className="ambient-grid" aria-hidden="true" />
+      <a className="skip-link" href="#main-content">
+        跳到内容
+      </a>
       <BrowserRouter>
         <Navigation />
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <main>
-                <HeroSection />
-                <AboutSection />
-                <ProjectsSection />
-                <PhotoSection />
-                <TimelineSection />
-                <FooterSection />
-              </main>
-            }
-          />
-          <Route path="/work" element={<WorkPage />} />
-          <Route path="/records" element={<RecordsPage />} />
-          <Route path="/records/:slug" element={<RecordArticlePage />} />
-          <Route path="/photography" element={<PhotographyPage />} />
-          <Route path="/photography/:slug" element={<PhotoArticlePage />} />
-        </Routes>
+        <AnimatedRoutes />
       </BrowserRouter>
     </div>
   )
 }
-
-export default App
