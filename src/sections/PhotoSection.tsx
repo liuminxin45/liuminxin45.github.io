@@ -1,5 +1,6 @@
 import { Link } from 'react-router'
 import EmptyState from '@/components/EmptyState'
+import PhotoTransitionLink from '@/components/PhotoTransitionLink'
 import { photos } from '@/data/photos.generated'
 
 const previewPhotos = photos.slice(0, 4)
@@ -18,13 +19,19 @@ export default function PhotoSection() {
         {photos.length > 0 ? (
           <div className="photo-grid">
             {previewPhotos.map(photo => (
-              <Link className="photo-card" key={photo.src} to={`/photography/${photo.slug}`} viewTransition>
-                <img src={`${import.meta.env.BASE_URL}${photo.src}`} alt={photo.alt} loading="lazy" />
+              <PhotoTransitionLink
+                className="photo-card"
+                key={photo.src}
+                slug={photo.slug}
+                src={`${import.meta.env.BASE_URL}${photo.src}`}
+                alt={photo.alt}
+                loading="lazy"
+              >
                 <span>
                   <strong>{photo.title}</strong>
                   {photo.place || photo.date ? <small>{[photo.place, photo.date].filter(Boolean).join(' · ')}</small> : null}
                 </span>
-              </Link>
+              </PhotoTransitionLink>
             ))}
           </div>
         ) : (

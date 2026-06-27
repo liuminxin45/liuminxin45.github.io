@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="刘民心的个人主页。" />
-    <meta name="theme-color" content="#ffffff" />
+    <meta name="theme-color" content="#fdfdfb" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="zh_CN" />
     <meta property="og:title" content="刘民心" />
@@ -34,6 +34,19 @@
           root.classList.remove('light', 'dark')
           root.classList.add(resolved)
           root.style.colorScheme = resolved
+
+          var motionParam = new URLSearchParams(window.location.search).get('motion')
+          if (motionParam === 'system' || motionParam === 'full' || motionParam === 'reduce') {
+            if (motionParam === 'system') {
+              localStorage.removeItem('motion')
+            } else {
+              localStorage.setItem('motion', motionParam)
+            }
+          }
+
+          var storedMotion = localStorage.getItem('motion')
+          root.classList.toggle('motion-full', storedMotion === 'full')
+          root.classList.toggle('motion-reduce', storedMotion === 'reduce')
         } catch (error) {
           document.documentElement.classList.add('light')
         }

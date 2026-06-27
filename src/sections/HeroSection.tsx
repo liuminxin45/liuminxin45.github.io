@@ -1,4 +1,5 @@
 import { Link } from 'react-router'
+import PhotoTransitionLink from '@/components/PhotoTransitionLink'
 import { records } from '@/data/records.generated'
 import { photos } from '@/data/photos.generated'
 
@@ -32,9 +33,14 @@ export default function HeroSection() {
         </div>
 
         {latestPhoto ? (
-          <Link className="hero-photo" to={`/photography/${latestPhoto.slug}`} viewTransition aria-label={latestPhoto.title}>
-            <img src={`${import.meta.env.BASE_URL}${latestPhoto.src}`} alt={latestPhoto.alt} />
-          </Link>
+          <PhotoTransitionLink
+            className="hero-photo"
+            slug={latestPhoto.slug}
+            src={`${import.meta.env.BASE_URL}${latestPhoto.src}`}
+            alt={latestPhoto.alt}
+            loading="eager"
+            aria-label={latestPhoto.title}
+          />
         ) : null}
       </div>
     </section>

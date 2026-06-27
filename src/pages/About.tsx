@@ -1,5 +1,6 @@
 import { Github, Mail } from 'lucide-react'
 import EmptyState from '@/components/EmptyState'
+import Magnetic from '@/components/Magnetic'
 
 const contactLinks = [
   {
@@ -25,8 +26,10 @@ export default function AboutPage() {
         <section className="contact-strip" aria-label="联系">
           {contactLinks.map(({ href, icon: Icon, label }) => (
             <a key={href} className="contact-pill" href={href} target={href.startsWith('http') ? '_blank' : undefined} rel="noreferrer">
-              <Icon size={18} aria-hidden="true" />
-              <span>{label}</span>
+              <Magnetic className="magnetic-label" strength={6}>
+                <Icon size={18} aria-hidden="true" />
+                <span>{label}</span>
+              </Magnetic>
             </a>
           ))}
         </section>

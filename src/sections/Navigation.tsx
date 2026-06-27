@@ -1,5 +1,6 @@
 import { Link, NavLink } from 'react-router'
 import ThemeToggle from '@/components/ThemeToggle'
+import Magnetic from '@/components/Magnetic'
 
 const navItems = [
   { to: '/', label: '首页', end: true },
@@ -27,7 +28,9 @@ export default function Navigation() {
                 viewTransition
                 className={({ isActive }) => (isActive ? 'active' : '')}
               >
-                {item.label}
+                <Magnetic className="magnetic-label" strength={5}>
+                  {item.label}
+                </Magnetic>
               </NavLink>
             ))}
           </div>

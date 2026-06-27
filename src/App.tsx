@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { BrowserRouter, Navigate, Route, Routes, useLocation, useParams } from 'react-router'
 import Navigation from './sections/Navigation'
 import HeroSection from './sections/HeroSection'
@@ -32,13 +32,19 @@ function LegacyRecordRedirect() {
 
 function AnimatedRoutes() {
   const location = useLocation()
+  const [isInitialRoute, setIsInitialRoute] = useState(true)
+
+  useEffect(() => {
+    const enterTimer = window.setTimeout(() => setIsInitialRoute(false), 720)
+    return () => window.clearTimeout(enterTimer)
+  }, [])
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
   }, [location.pathname])
 
   return (
-    <div id="main-content" className="route-shell" key={location.pathname}>
+    <div id="main-content" className={`route-shell ${isInitialRoute ? 'is-initial-route' : ''}`} key={location.pathname}>
       <Routes location={location}>
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<AboutPage />} />

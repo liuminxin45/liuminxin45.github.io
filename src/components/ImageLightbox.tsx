@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { X } from 'lucide-react'
 
 type ImageLightboxProps = {
@@ -45,25 +46,34 @@ export default function ImageLightbox({ image, onClose }: ImageLightboxProps) {
     }
   }, [requestClose])
 
-  return (
+  const lightbox = (
     <div
       className={`image-lightbox ${isClosing ? 'is-closing' : ''}`}
       role="dialog"
       aria-modal="true"
+      onPointerDown={requestClose}
       onClick={requestClose}
     >
       <button
         className="image-lightbox-close"
         type="button"
         aria-label="关闭图片预览"
-        onClick={event => {
+        onPointerDown={event => {
           event.stopPropagation()
           requestClose()
         }}
+        onClick={event => event.stopPropagation()}
       >
         <X size={22} />
       </button>
-      <img src={image.src} alt={image.alt} onClick={event => event.stopPropagation()} />
+      <img
+        src={image.src}
+        alt={image.alt}
+        onPointerDown={event => event.stopPropagation()}
+        onClick={event => event.stopPropagation()}
+      />
     </div>
   )
+
+  return createPortal(lightbox, document.body)
 }

@@ -1,6 +1,6 @@
-import { Link } from 'react-router'
 import { photos } from '@/data/photos.generated'
 import EmptyState from '@/components/EmptyState'
+import PhotoTransitionLink from '@/components/PhotoTransitionLink'
 
 export default function PhotographyPage() {
   return (
@@ -13,13 +13,19 @@ export default function PhotographyPage() {
         {photos.length > 0 ? (
           <section className="photography-gallery">
             {photos.map(photo => (
-              <Link className="photo-gallery-card" key={photo.src} to={`/photography/${photo.slug}`} viewTransition>
-                <img src={`${import.meta.env.BASE_URL}${photo.src}`} alt={photo.alt} loading="lazy" />
+              <PhotoTransitionLink
+                className="photo-gallery-card"
+                key={photo.src}
+                slug={photo.slug}
+                src={`${import.meta.env.BASE_URL}${photo.src}`}
+                alt={photo.alt}
+                loading="lazy"
+              >
                 <div>
                   <h2>{photo.title}</h2>
                   <p>{[photo.place, photo.date].filter(Boolean).join(' · ')}</p>
                 </div>
-              </Link>
+              </PhotoTransitionLink>
             ))}
           </section>
         ) : (

@@ -1,4 +1,7 @@
 import { useEffect, useState } from 'react'
+import { motion } from 'motion/react'
+import usePrefersReducedMotion from '@/hooks/use-prefers-reduced-motion'
+import { getViewTransitionDocument, prefersReducedMotion } from '@/lib/view-transitions'
 
 type ThemeMode = 'light' | 'dark' | 'system'
 type ResolvedTheme = 'light' | 'dark'
@@ -40,6 +43,7 @@ function applyTheme(theme: ThemeMode) {
 export default function ThemeToggle() {
   const [theme, setTheme] = useState<ThemeMode>(() => getStoredTheme())
   const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme>(() => resolveTheme(getStoredTheme()))
+  const reduceMotion = usePrefersReducedMotion()
   const isDark = resolvedTheme === 'dark'
 
   useEffect(() => {
@@ -62,11 +66,24 @@ export default function ThemeToggle() {
 
   const toggleTheme = () => {
     const nextTheme: ThemeMode = resolvedTheme === 'dark' ? 'light' : 'dark'
+    const applyNextTheme = () => {
+      localStorage.setItem('theme', nextTheme)
+      setTheme(nextTheme)
+      setResolvedTheme(nextTheme)
+      applyTheme(nextTheme)
+    }
 
-    localStorage.setItem('theme', nextTheme)
-    setTheme(nextTheme)
-    setResolvedTheme(nextTheme)
-    applyTheme(nextTheme)
+    const transitionDocument = getViewTransitionDocument()
+    if (transitionDocument.startViewTransition && !prefersReducedMotion()) {
+      document.documentElement.dataset.themeTransition = 'true'
+      const transition = transitionDocument.startViewTransition(applyNextTheme)
+      transition.finished.finally(() => {
+        delete document.documentElement.dataset.themeTransition
+      })
+      return
+    }
+
+    applyNextTheme()
   }
 
   return (
@@ -77,9 +94,18 @@ export default function ThemeToggle() {
       title={theme === 'system' ? 'Toggle Dark Mode' : `Toggle Dark Mode (${theme})`}
       onClick={toggleTheme}
     >
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <motion.svg
+        key={isDark ? 'sun' : 'moon'}
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        aria-hidden="true"
+        initial={reduceMotion ? false : { opacity: 0, rotate: isDark ? -28 : 28, scale: 0.82 }}
+        animate={{ opacity: 1, rotate: 0, scale: 1 }}
+        transition={{ type: 'spring', stiffness: 460, damping: 30, mass: 0.55 }}
+      >
         <path d={isDark ? sunPath : moonPath} fillRule={isDark ? undefined : 'evenodd'} clipRule={isDark ? undefined : 'evenodd'} />
-      </svg>
+      </motion.svg>
     </button>
   )
 }

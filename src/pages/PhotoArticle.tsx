@@ -1,8 +1,13 @@
-import { useState } from 'react'
+import { useState, type CSSProperties } from 'react'
 import { Link, useParams } from 'react-router'
 import { ArrowLeft } from 'lucide-react'
 import ImageLightbox from '@/components/ImageLightbox'
 import { photos } from '@/data/photos.generated'
+import { getPhotoTransitionName } from '@/lib/view-transitions'
+
+type PhotoTransitionStyle = CSSProperties & {
+  '--photo-view-transition-name': string
+}
 
 export default function PhotoArticlePage() {
   const { slug } = useParams()
@@ -42,8 +47,10 @@ export default function PhotoArticlePage() {
           </header>
 
           <img
+            className="photo-transition-target"
             src={`${import.meta.env.BASE_URL}${photo.src}`}
             alt={photo.alt}
+            style={{ '--photo-view-transition-name': getPhotoTransitionName(photo.slug) } as PhotoTransitionStyle}
             onClick={event => setLightboxImage({ src: event.currentTarget.currentSrc || event.currentTarget.src, alt: photo.alt })}
           />
 
