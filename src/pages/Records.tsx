@@ -20,12 +20,13 @@ export default function RecordsPage() {
   return (
     <main className="records-page">
       <div className="section-shell">
-        <section className="page-hero">
+        <section className="page-hero" data-reveal>
           <h1>博客</h1>
+          <p>工程实践、工具，以及过程中值得留下来的判断。</p>
         </section>
 
         {records.length > 0 ? (
-          <section className="record-index">
+          <section className="record-index" data-reveal="group" data-reveal-delay="1">
             {showFilters ? (
               <div className="blog-filters" aria-label="筛选博客">
                 <label>

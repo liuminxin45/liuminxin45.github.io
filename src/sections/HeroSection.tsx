@@ -10,7 +10,7 @@ export default function HeroSection() {
   return (
     <section className="hero-section">
       <div className="site-container hero-grid">
-        <div className="hero-copy">
+        <div className="hero-copy" data-reveal>
           <h1>嗨! 朋友</h1>
 
           <div className="hero-index" aria-label="最新内容">
@@ -35,6 +35,7 @@ export default function HeroSection() {
         {latestPhoto ? (
           <PhotoTransitionLink
             className="hero-photo"
+            data-reveal
             slug={latestPhoto.slug}
             src={`${import.meta.env.BASE_URL}${latestPhoto.src}`}
             alt={latestPhoto.alt}

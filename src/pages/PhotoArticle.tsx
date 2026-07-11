@@ -1,4 +1,4 @@
-import { useState, type CSSProperties } from 'react'
+import { useState, type CSSProperties, type KeyboardEvent } from 'react'
 import { Link, useParams } from 'react-router'
 import { ArrowLeft } from 'lucide-react'
 import ImageLightbox from '@/components/ImageLightbox'
@@ -13,6 +13,15 @@ export default function PhotoArticlePage() {
   const { slug } = useParams()
   const photo = photos.find(item => item.slug === slug)
   const [lightboxImage, setLightboxImage] = useState<{ src: string; alt: string } | null>(null)
+
+  const handleImageKeyDown = (event: KeyboardEvent<HTMLImageElement>) => {
+    if (event.key !== 'Enter' && event.key !== ' ') {
+      return
+    }
+
+    event.preventDefault()
+    setLightboxImage({ src: event.currentTarget.currentSrc || event.currentTarget.src, alt: photo?.alt ?? '' })
+  }
 
   if (!photo) {
     return (
@@ -39,24 +48,30 @@ export default function PhotoArticlePage() {
           回到摄影
         </Link>
 
-        <article className="photo-article">
-          <header>
-            <p className="soft-label">摄影</p>
-            <h1>{photo.title}</h1>
-            {photo.place || photo.date ? <p>{[photo.place, photo.date].filter(Boolean).join(' · ')}</p> : null}
-          </header>
-
+        <article className="photo-article photo-article-layout" data-reveal>
           <img
             className="photo-transition-target"
             src={`${import.meta.env.BASE_URL}${photo.src}`}
             alt={photo.alt}
+            aria-label={`查看大图：${photo.alt}`}
+            role="button"
+            tabIndex={0}
             style={{ '--photo-view-transition-name': getPhotoTransitionName(photo.slug) } as PhotoTransitionStyle}
             onClick={event => setLightboxImage({ src: event.currentTarget.currentSrc || event.currentTarget.src, alt: photo.alt })}
+            onKeyDown={handleImageKeyDown}
           />
 
-          {photo.contentHtml ? (
-            <div className="markdown-body" dangerouslySetInnerHTML={{ __html: photo.contentHtml }} />
-          ) : null}
+          <header>
+            <p className="soft-label">摄影</p>
+            <h1>{photo.title}</h1>
+            <dl className="photo-meta">
+              {photo.date ? <><dt>日期</dt><dd>{photo.date}</dd></> : null}
+              {photo.place ? <><dt>地点</dt><dd>{photo.place}</dd></> : null}
+            </dl>
+            {photo.contentHtml ? (
+              <div className="photo-note" dangerouslySetInnerHTML={{ __html: photo.contentHtml }} />
+            ) : null}
+          </header>
         </article>
       </div>
 

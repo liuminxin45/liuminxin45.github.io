@@ -9,7 +9,7 @@ export default function PhotoSection() {
   return (
     <section id="photo-preview" className="section-block photo-section">
       <div className="site-container">
-        <div className="section-heading with-link">
+        <div className="section-heading with-link" data-reveal>
           <div>
             <h2>摄影</h2>
           </div>
@@ -17,7 +17,7 @@ export default function PhotoSection() {
         </div>
 
         {photos.length > 0 ? (
-          <div className="photo-grid">
+          <div className="photo-grid" data-reveal="group" data-reveal-delay="1">
             {previewPhotos.map(photo => (
               <PhotoTransitionLink
                 className="photo-card"

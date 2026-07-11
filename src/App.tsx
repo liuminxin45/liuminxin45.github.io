@@ -12,6 +12,7 @@ import PhotoArticlePage from './pages/PhotoArticle'
 import RecordsPage from './pages/Records'
 import RecordArticlePage from './pages/RecordArticle'
 import WorksPage from './pages/Works'
+import useScrollReveal from './hooks/use-scroll-reveal'
 
 function HomePage() {
   return (
@@ -33,6 +34,8 @@ function LegacyRecordRedirect() {
 function AnimatedRoutes() {
   const location = useLocation()
   const [isInitialRoute, setIsInitialRoute] = useState(true)
+
+  useScrollReveal(location.pathname)
 
   useEffect(() => {
     const enterTimer = window.setTimeout(() => setIsInitialRoute(false), 720)

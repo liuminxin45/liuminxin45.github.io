@@ -8,7 +8,7 @@ export default function TimelineSection() {
   return (
     <section id="blog-preview" className="section-block">
       <div className="site-container">
-        <div className="section-heading with-link">
+        <div className="section-heading with-link" data-reveal>
           <div>
             <h2>博客</h2>
           </div>
@@ -16,7 +16,7 @@ export default function TimelineSection() {
         </div>
 
         {previewRecords.length > 0 ? (
-          <div className="thought-list">
+          <div className="thought-list" data-reveal="group" data-reveal-delay="1">
             {previewRecords.map(record => (
               <Link className="thought-row" key={record.slug} to={`/blogs/${record.slug}`} viewTransition>
                 <div>

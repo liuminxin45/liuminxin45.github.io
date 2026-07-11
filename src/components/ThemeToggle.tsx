@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion } from 'motion/react'
 import usePrefersReducedMotion from '@/hooks/use-prefers-reduced-motion'
 import { getViewTransitionDocument, prefersReducedMotion } from '@/lib/view-transitions'
@@ -41,6 +41,8 @@ function applyTheme(theme: ThemeMode) {
 }
 
 export default function ThemeToggle() {
+  const buttonRef = useRef<HTMLButtonElement>(null)
+  const isTransitioningRef = useRef(false)
   const [theme, setTheme] = useState<ThemeMode>(() => getStoredTheme())
   const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme>(() => resolveTheme(getStoredTheme()))
   const reduceMotion = usePrefersReducedMotion()
@@ -65,6 +67,10 @@ export default function ThemeToggle() {
   }, [theme])
 
   const toggleTheme = () => {
+    if (isTransitioningRef.current) {
+      return
+    }
+
     const nextTheme: ThemeMode = resolvedTheme === 'dark' ? 'light' : 'dark'
     const applyNextTheme = () => {
       localStorage.setItem('theme', nextTheme)
@@ -75,11 +81,37 @@ export default function ThemeToggle() {
 
     const transitionDocument = getViewTransitionDocument()
     if (transitionDocument.startViewTransition && !prefersReducedMotion()) {
-      document.documentElement.dataset.themeTransition = 'true'
-      const transition = transitionDocument.startViewTransition(applyNextTheme)
-      transition.finished.finally(() => {
-        delete document.documentElement.dataset.themeTransition
-      })
+      const root = document.documentElement
+      const buttonRect = buttonRef.current?.getBoundingClientRect()
+      const originX = buttonRect ? buttonRect.left + buttonRect.width / 2 : window.innerWidth / 2
+      const originY = buttonRect ? buttonRect.top + buttonRect.height / 2 : 0
+      const revealRadius = Math.hypot(
+        Math.max(originX, window.innerWidth - originX),
+        Math.max(originY, window.innerHeight - originY),
+      )
+
+      root.style.setProperty('--theme-transition-x', `${originX}px`)
+      root.style.setProperty('--theme-transition-y', `${originY}px`)
+      root.style.setProperty('--theme-transition-radius', `${revealRadius}px`)
+      root.dataset.themeTransition = 'true'
+      isTransitioningRef.current = true
+
+      const cleanupTransition = () => {
+        isTransitioningRef.current = false
+        delete root.dataset.themeTransition
+        root.style.removeProperty('--theme-transition-x')
+        root.style.removeProperty('--theme-transition-y')
+        root.style.removeProperty('--theme-transition-radius')
+      }
+
+      try {
+        const transition = transitionDocument.startViewTransition(applyNextTheme)
+        void transition.finished.then(cleanupTransition, cleanupTransition)
+      } catch {
+        cleanupTransition()
+        applyNextTheme()
+      }
+
       return
     }
 
@@ -88,10 +120,11 @@ export default function ThemeToggle() {
 
   return (
     <button
+      ref={buttonRef}
       type="button"
       className="theme-toggle"
-      aria-label="Toggle Dark Mode"
-      title={theme === 'system' ? 'Toggle Dark Mode' : `Toggle Dark Mode (${theme})`}
+      aria-label={isDark ? '切换到浅色主题' : '切换到深色主题'}
+      title={isDark ? '切换到浅色主题' : '切换到深色主题'}
       onClick={toggleTheme}
     >
       <motion.svg
@@ -100,9 +133,9 @@ export default function ThemeToggle() {
         viewBox="0 0 24 24"
         fill="currentColor"
         aria-hidden="true"
-        initial={reduceMotion ? false : { opacity: 0, rotate: isDark ? -28 : 28, scale: 0.82 }}
+        initial={reduceMotion ? false : { opacity: 0, rotate: isDark ? -16 : 16, scale: 0.88 }}
         animate={{ opacity: 1, rotate: 0, scale: 1 }}
-        transition={{ type: 'spring', stiffness: 460, damping: 30, mass: 0.55 }}
+        transition={{ duration: 0.34, ease: [0.22, 1, 0.36, 1] }}
       >
         <path d={isDark ? sunPath : moonPath} fillRule={isDark ? undefined : 'evenodd'} clipRule={isDark ? undefined : 'evenodd'} />
       </motion.svg>

@@ -65,6 +65,67 @@ export function excerptFromMarkdown(markdown) {
     .slice(0, 140)
 }
 
+function plainHeadingText(value) {
+  return String(value)
+    .replace(/`([^`]+)`/g, '$1')
+    .replace(/\[([^\]]+)]\([^)]+\)/g, '$1')
+    .replace(/[*_]/g, '')
+    .replace(/\s+#+\s*$/, '')
+    .trim()
+}
+
+function headingSlug(value) {
+  return plainHeadingText(value)
+    .toLowerCase()
+    .replace(/[^a-z0-9\u4e00-\u9fa5]+/g, '-')
+    .replace(/^-+|-+$/g, '') || 'section'
+}
+
+export function markdownHeadings(markdown) {
+  const counts = new Map()
+  const usedIds = new Set()
+
+  return String(markdown)
+    .replace(/```[\s\S]*?```/g, '')
+    .split(/\r?\n/)
+    .flatMap(line => {
+      const match = line.match(/^(#{1,3})\s+(.+)$/)
+      if (!match) {
+        return []
+      }
+
+      const text = plainHeadingText(match[2])
+      const baseId = headingSlug(text)
+      let count = (counts.get(baseId) ?? 0) + 1
+      let id = count === 1 ? baseId : `${baseId}-${count}`
+
+      while (usedIds.has(id)) {
+        count += 1
+        id = `${baseId}-${count}`
+      }
+
+      counts.set(baseId, count)
+      usedIds.add(id)
+
+      return [{
+        id,
+        level: match[1].length,
+        text,
+      }]
+    })
+}
+
+export function readingMinutesFromMarkdown(markdown) {
+  const readableText = String(markdown)
+    .replace(/```[\s\S]*?```/g, '')
+    .replace(/!\[[^\]]*]\([^)]+\)/g, '')
+    .replace(/\[([^\]]+)]\([^)]+\)/g, '$1')
+    .replace(/[#>*_`|\-]/g, '')
+    .trim()
+
+  return Math.max(1, Math.ceil(readableText.length / 450))
+}
+
 function resolveAssetUrl(url, assetBase) {
   if (!assetBase || /^(https?:)?\/\//.test(url) || url.startsWith('/') || url.startsWith('#')) {
     return url
@@ -129,9 +190,12 @@ function renderList(block, assetBase) {
 
 export function markdownToHtml(markdown, options = {}) {
   const assetBase = options.assetBase ?? ''
+  const interactiveImages = options.interactiveImages ?? false
   const normalized = String(markdown).replace(/\r\n?/g, '\n')
   const blocks = normalized.split(/\n{2,}/).map(block => block.trim()).filter(Boolean)
   const html = []
+  const headings = markdownHeadings(normalized)
+  let headingIndex = 0
 
   for (const block of blocks) {
     if (block.startsWith('```')) {
@@ -156,7 +220,11 @@ export function markdownToHtml(markdown, options = {}) {
 
     const image = block.match(/^!\[([^\]]*)]\(([^)\s]+)\)$/)
     if (image) {
-      html.push(`<figure><img src="${escapeHtml(resolveAssetUrl(image[2], assetBase))}" alt="${escapeHtml(image[1])}" loading="lazy" /></figure>`)
+      const imageLabel = image[1] || '文章图片'
+      const interactionAttributes = interactiveImages
+        ? ` role="button" tabindex="0" aria-label="查看大图：${escapeHtml(imageLabel)}"`
+        : ''
+      html.push(`<figure><img src="${escapeHtml(resolveAssetUrl(image[2], assetBase))}" alt="${escapeHtml(image[1])}" loading="lazy"${interactionAttributes} /></figure>`)
       continue
     }
 
@@ -166,15 +234,18 @@ export function markdownToHtml(markdown, options = {}) {
     }
 
     if (block.startsWith('### ')) {
-      html.push(`<h3>${inlineMarkdown(block.slice(4), assetBase)}</h3>`)
+      const heading = headings[headingIndex++]
+      html.push(`<h3 id="${escapeHtml(heading.id)}">${inlineMarkdown(block.slice(4).replace(/\s+#+\s*$/, ''), assetBase)}<a class="heading-anchor" href="#${escapeHtml(heading.id)}" aria-label="链接到本节：${escapeHtml(heading.text)}">#</a></h3>`)
       continue
     }
     if (block.startsWith('## ')) {
-      html.push(`<h2>${inlineMarkdown(block.slice(3), assetBase)}</h2>`)
+      const heading = headings[headingIndex++]
+      html.push(`<h2 id="${escapeHtml(heading.id)}">${inlineMarkdown(block.slice(3).replace(/\s+#+\s*$/, ''), assetBase)}<a class="heading-anchor" href="#${escapeHtml(heading.id)}" aria-label="链接到本节：${escapeHtml(heading.text)}">#</a></h2>`)
       continue
     }
     if (block.startsWith('# ')) {
-      html.push(`<h1>${inlineMarkdown(block.slice(2), assetBase)}</h1>`)
+      const heading = headings[headingIndex++]
+      html.push(`<h1 id="${escapeHtml(heading.id)}">${inlineMarkdown(block.slice(2).replace(/\s+#+\s*$/, ''), assetBase)}<a class="heading-anchor" href="#${escapeHtml(heading.id)}" aria-label="链接到本节：${escapeHtml(heading.text)}">#</a></h1>`)
       continue
     }
     if (block.startsWith('> ')) {

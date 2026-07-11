@@ -5,7 +5,9 @@ import {
   dateFromFile,
   excerptFromMarkdown,
   markdownToHtml,
+  markdownHeadings,
   parseFrontmatter,
+  readingMinutesFromMarkdown,
   slugFromFile,
   sortKey,
 } from './markdown-utils.mjs'
@@ -71,7 +73,9 @@ const records = collectMarkdown(recordsDir).map(file => {
     excerpt: article.data.excerpt || excerptFromMarkdown(article.body),
     cover,
     alt: article.data.alt || article.data.title || titleFromFile(file),
-    contentHtml: markdownToHtml(article.body, { assetBase }),
+    headings: markdownHeadings(article.body).filter(heading => heading.level === 2 || heading.level === 3),
+    readingMinutes: readingMinutesFromMarkdown(article.body),
+    contentHtml: markdownToHtml(article.body, { assetBase, interactiveImages: true }),
     sortKey: sortKey(date, file),
   }
 }).sort((a, b) => b.sortKey.localeCompare(a.sortKey) || b.file.localeCompare(a.file, 'zh-CN'))
@@ -88,6 +92,8 @@ export type RecordItem = {
   excerpt: string
   cover: string
   alt: string
+  headings: Array<{ id: string; level: number; text: string }>
+  readingMinutes: number
   contentHtml: string
   sortKey: string
 }

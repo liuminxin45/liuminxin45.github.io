@@ -17,7 +17,7 @@ export default function FooterSection() {
   return (
     <footer id="contact" className="footer-section">
       <div className="site-container">
-        <div className="footer-bar">
+        <div className="footer-bar" data-reveal>
           <Link className="footer-brand" to="/" viewTransition>
             刘民心
           </Link>
