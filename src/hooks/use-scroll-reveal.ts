@@ -24,7 +24,10 @@ export default function useScrollReveal(routeKey: string) {
       },
       {
         rootMargin: '0px 0px -8% 0px',
-        threshold: 0.08,
+        // Reveal as soon as any part enters the viewport. A ratio-based
+        // threshold can never be reached by very tall elements, such as a
+        // full blog article whose height is many times the viewport height.
+        threshold: 0,
       },
     )
 
