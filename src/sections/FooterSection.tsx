@@ -34,6 +34,19 @@ export default function FooterSection() {
           </nav>
 
           <span className="footer-bottom">© {new Date().getFullYear()}</span>
+
+          <div className="footer-registration" aria-label="网站备案信息">
+            <a href="https://beian.miit.gov.cn/" target="_blank" rel="noreferrer">
+              蜀ICP备2026018489号-2
+            </a>
+            <a
+              href="https://beian.mps.gov.cn/#/query/webSearch?code=51030402000225"
+              target="_blank"
+              rel="noreferrer"
+            >
+              川公网安备51030402000225号
+            </a>
+          </div>
         </div>
       </div>
     </footer>
