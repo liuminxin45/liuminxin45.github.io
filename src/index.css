@@ -2062,3 +2062,550 @@ html.motion-reduce *::after {
   scroll-behavior: auto !important;
   transition-duration: 0.01ms !important;
 }
+
+/* PodFlow Studio product page */
+.podflow-page {
+  padding-block: clamp(32px, 5vw, 64px) clamp(64px, 10vw, 128px);
+}
+
+.podflow-back {
+  margin-top: 24px;
+  color: var(--muted);
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.podflow-hero {
+  display: grid;
+  grid-template-columns: minmax(0, .94fr) minmax(500px, 1.06fr);
+  gap: clamp(32px, 4.5vw, 68px);
+  align-items: center;
+  min-height: min(760px, calc(100vh - 108px));
+  padding-block: clamp(56px, 9vw, 112px);
+}
+
+.podflow-hero-copy h1,
+.podflow-section-heading h2,
+.podflow-local h2,
+.podflow-final-cta h2 {
+  margin: 0;
+  font-weight: 500;
+  letter-spacing: -.04em;
+  text-wrap: balance;
+}
+
+.podflow-hero-copy h1 {
+  margin-top: 20px;
+  max-width: 13ch;
+  font-size: clamp(42px, 5vw, 64px);
+  line-height: 1.08;
+}
+
+.podflow-lead {
+  max-width: 40em;
+  margin: 28px 0 0;
+  color: var(--soft);
+  font-size: clamp(16px, 1.5vw, 19px);
+  line-height: 1.85;
+}
+
+.podflow-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 32px;
+}
+
+.podflow-button {
+  display: inline-flex;
+  min-height: 46px;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  padding: 0 20px;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: transform var(--duration-hover) var(--ease-out), background-color var(--duration-hover) var(--ease-soft), color var(--duration-hover) var(--ease-soft);
+}
+
+.podflow-button-primary {
+  border-color: var(--foreground);
+  background: var(--foreground);
+  color: var(--background);
+}
+
+.podflow-button-secondary {
+  background: transparent;
+}
+
+.podflow-button:hover {
+  transform: translate3d(0, -2px, 0);
+}
+
+.podflow-button-secondary:hover {
+  background: var(--panel-hover);
+}
+
+.podflow-source-link,
+.podflow-local a,
+.podflow-content-state a,
+.podflow-episode-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--muted);
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.podflow-source-link {
+  margin-top: 18px;
+}
+
+.podflow-source-link:hover,
+.podflow-local a:hover,
+.podflow-content-state a:hover,
+.podflow-episode-links a:hover {
+  color: var(--accent);
+}
+
+.podflow-hero-media {
+  position: relative;
+  margin: 0;
+}
+
+.podflow-hero-media::before {
+  position: absolute;
+  inset: -18px 18px 18px -18px;
+  z-index: -1;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  content: '';
+}
+
+.podflow-hero-media img,
+.podflow-workflow-row img {
+  display: block;
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--panel);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, .14);
+}
+
+.podflow-hero-media figcaption {
+  margin-top: 12px;
+  color: var(--faint);
+  font-size: 11px;
+  letter-spacing: .02em;
+}
+
+.podflow-proof {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-block: 1px solid var(--line-strong);
+}
+
+.podflow-proof div {
+  display: grid;
+  gap: 4px;
+  padding: 24px clamp(14px, 3vw, 34px);
+  border-right: 1px solid var(--line);
+}
+
+.podflow-proof div:first-child {
+  padding-left: 0;
+}
+
+.podflow-proof div:last-child {
+  border-right: 0;
+}
+
+.podflow-proof strong {
+  font-size: clamp(17px, 2vw, 23px);
+  font-weight: 500;
+}
+
+.podflow-proof span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.podflow-workflow,
+.podflow-episodes {
+  padding-top: clamp(92px, 13vw, 168px);
+}
+
+.podflow-section-heading {
+  display: grid;
+  grid-template-columns: minmax(0, .35fr) minmax(280px, .7fr) minmax(260px, .55fr);
+  gap: clamp(24px, 5vw, 72px);
+  align-items: start;
+  padding-bottom: clamp(30px, 5vw, 58px);
+  border-bottom: 1px solid var(--line-strong);
+}
+
+.podflow-section-heading h2 {
+  font-size: clamp(32px, 4vw, 54px);
+  line-height: 1.12;
+}
+
+.podflow-section-heading > p:last-child {
+  margin: 2px 0 0;
+  color: var(--muted);
+  line-height: 1.85;
+}
+
+.podflow-workflow-row {
+  display: grid;
+  grid-template-columns: minmax(260px, .65fr) minmax(480px, 1.35fr);
+  gap: clamp(36px, 7vw, 108px);
+  align-items: center;
+  padding-block: clamp(56px, 8vw, 104px);
+  border-bottom: 1px solid var(--line);
+}
+
+.podflow-workflow-row.is-reversed {
+  grid-template-columns: minmax(480px, 1.35fr) minmax(260px, .65fr);
+}
+
+.podflow-workflow-row.is-reversed .podflow-workflow-copy {
+  order: 2;
+}
+
+.podflow-workflow-row h3 {
+  margin: 18px 0 0;
+  max-width: 14ch;
+  font-size: clamp(27px, 3vw, 40px);
+  font-weight: 500;
+  letter-spacing: -.035em;
+  line-height: 1.2;
+}
+
+.podflow-workflow-row .podflow-workflow-copy > p:last-child {
+  max-width: 42em;
+  margin: 20px 0 0;
+  color: var(--muted);
+  line-height: 1.9;
+}
+
+.podflow-step {
+  display: block;
+  margin-bottom: 28px;
+  color: var(--accent);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.podflow-content-state {
+  display: grid;
+  justify-items: start;
+  gap: 12px;
+  padding: clamp(42px, 7vw, 82px) 0;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+}
+
+.podflow-content-state h3 {
+  margin: 4px 0 0;
+  color: var(--foreground);
+  font-size: clamp(24px, 3vw, 34px);
+  font-weight: 500;
+}
+
+.podflow-content-state p {
+  max-width: 58ch;
+  margin: 0;
+}
+
+.podflow-content-state.is-error {
+  color: #b42318;
+}
+
+html.dark .podflow-content-state.is-error {
+  color: #ff9b8f;
+}
+
+.podflow-player {
+  margin-top: 42px;
+  border: 1px solid var(--line-strong);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.podflow-player-main {
+  display: grid;
+  grid-template-columns: minmax(220px, .42fr) minmax(0, 1fr);
+  gap: clamp(28px, 5vw, 68px);
+  align-items: center;
+  padding: clamp(20px, 4vw, 52px);
+}
+
+.podflow-player-main img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.podflow-player-main h3 {
+  margin: 12px 0 0;
+  font-size: clamp(30px, 4vw, 50px);
+  font-weight: 500;
+  line-height: 1.18;
+}
+
+.podflow-player-main p:not(.soft-label) {
+  max-width: 56ch;
+  color: var(--muted);
+}
+
+.podflow-player audio {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.podflow-episode-links {
+  display: flex;
+  gap: 18px;
+  margin-top: 14px;
+}
+
+.podflow-player-detail {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(30px, 6vw, 90px);
+  border-top: 1px solid var(--line);
+  padding: clamp(24px, 4vw, 48px);
+}
+
+.podflow-player-detail h4 {
+  margin: 0 0 18px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: .08em;
+}
+
+.podflow-chapters,
+.podflow-sources {
+  display: grid;
+  gap: 1px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.podflow-chapters button,
+.podflow-sources a {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 12px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--soft);
+  font: inherit;
+  font-size: 13px;
+  text-align: left;
+  text-decoration: none;
+  padding: 9px 10px;
+}
+
+.podflow-chapters button {
+  cursor: pointer;
+}
+
+.podflow-chapters button:hover,
+.podflow-sources a:hover {
+  background: var(--panel-hover);
+  color: var(--accent);
+}
+
+.podflow-chapters span {
+  width: 44px;
+  color: var(--faint);
+  font-variant-numeric: tabular-nums;
+}
+
+.podflow-disclosure {
+  margin: 22px 10px 0;
+  color: var(--faint);
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.podflow-episode-index {
+  display: grid;
+  margin-top: 24px;
+  border-top: 1px solid var(--line);
+}
+
+.podflow-episode-index button {
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr) auto;
+  gap: 24px;
+  align-items: center;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  padding: 16px 4px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.podflow-episode-index button:hover,
+.podflow-episode-index button.is-active {
+  color: var(--accent);
+}
+
+.podflow-episode-index strong {
+  color: var(--foreground);
+  font-weight: 500;
+}
+
+.podflow-episode-index span:last-child {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.podflow-local {
+  display: grid;
+  grid-template-columns: 1.15fr .85fr;
+  gap: clamp(40px, 10vw, 150px);
+  margin-top: clamp(96px, 14vw, 180px);
+  padding: clamp(42px, 7vw, 84px) 0;
+  border-block: 1px solid var(--line-strong);
+}
+
+.podflow-local h2,
+.podflow-final-cta h2 {
+  margin-top: 18px;
+  font-size: clamp(32px, 4.5vw, 58px);
+  line-height: 1.12;
+}
+
+.podflow-local > div:last-child {
+  align-self: end;
+}
+
+.podflow-local > div:last-child p {
+  margin: 0 0 24px;
+  color: var(--muted);
+  line-height: 1.9;
+}
+
+.podflow-final-cta {
+  max-width: 960px;
+  padding-top: clamp(96px, 14vw, 180px);
+}
+
+.podflow-final-cta h2 {
+  max-width: 15ch;
+}
+
+.podflow-button:focus-visible,
+.podflow-source-link:focus-visible,
+.podflow-local a:focus-visible,
+.podflow-content-state a:focus-visible,
+.podflow-episode-links a:focus-visible,
+.podflow-chapters button:focus-visible,
+.podflow-sources a:focus-visible,
+.podflow-episode-index button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+@media (max-width: 980px) {
+  .podflow-hero {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .podflow-hero-copy h1 {
+    max-width: 13ch;
+  }
+
+  .podflow-section-heading {
+    grid-template-columns: .45fr 1fr;
+  }
+
+  .podflow-section-heading > p:last-child {
+    grid-column: 2;
+  }
+
+  .podflow-workflow-row,
+  .podflow-workflow-row.is-reversed {
+    grid-template-columns: 1fr;
+  }
+
+  .podflow-workflow-row.is-reversed .podflow-workflow-copy {
+    order: 0;
+  }
+}
+
+@media (max-width: 720px) {
+  .podflow-hero {
+    padding-top: 42px;
+  }
+
+  .podflow-hero-copy h1 {
+    font-size: clamp(41px, 13vw, 60px);
+  }
+
+  .podflow-hero-media::before {
+    inset: -8px 8px 8px -8px;
+  }
+
+  .podflow-proof {
+    grid-template-columns: 1fr;
+  }
+
+  .podflow-proof div,
+  .podflow-proof div:first-child {
+    padding: 18px 0;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .podflow-proof div:last-child {
+    border-bottom: 0;
+  }
+
+  .podflow-section-heading,
+  .podflow-local,
+  .podflow-player-main,
+  .podflow-player-detail {
+    grid-template-columns: 1fr;
+  }
+
+  .podflow-section-heading > p:last-child {
+    grid-column: auto;
+  }
+
+  .podflow-workflow-row {
+    gap: 32px;
+  }
+
+  .podflow-player-main img {
+    max-width: 280px;
+  }
+
+  .podflow-episode-index button {
+    grid-template-columns: 1fr auto;
+    gap: 4px 14px;
+  }
+
+  .podflow-episode-index strong {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .podflow-local > div:last-child {
+    align-self: auto;
+  }
+}

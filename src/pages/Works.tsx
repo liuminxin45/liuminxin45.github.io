@@ -1,12 +1,13 @@
-import { ArrowUpRight } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
+import { Link } from 'react-router'
 
 const works = [
   {
-    title: 'Auto-Podcast Studio',
-    slug: 'auto-podcast',
+    title: 'PodFlow Studio',
+    slug: 'podflow-studio',
     type: '桌面端工作台',
     description: '本地运行的 AI 播客工作台，把素材发现、脚本写作、录制或生成音频和发布串成可恢复流程。',
-    href: 'https://github.com/liuminxin45/auto-podcast',
+    href: '/works/podflow-studio',
     capabilities: ['本地优先', 'AI 工作流', '内容生产'],
   },
 ]
@@ -22,7 +23,7 @@ export default function WorksPage() {
 
         <section className="work-index" aria-label="造物列表" data-reveal="group" data-reveal-delay="1">
           {works.map((work, index) => (
-            <a className="work-index-row" key={work.slug} href={work.href} target="_blank" rel="noreferrer">
+            <Link className="work-index-row" key={work.slug} to={work.href} viewTransition>
               <span className="work-number">{String(index + 1).padStart(2, '0')}</span>
               <div className="work-copy">
                 <p className="soft-label">{work.type}</p>
@@ -33,10 +34,10 @@ export default function WorksPage() {
                 {work.capabilities.map(capability => <li key={capability}>{capability}</li>)}
               </ul>
               <span className="work-cta">
-                GitHub
-                <ArrowUpRight size={17} aria-hidden="true" />
+                查看产品
+                <ArrowRight size={17} aria-hidden="true" />
               </span>
-            </a>
+            </Link>
           ))}
         </section>
       </div>

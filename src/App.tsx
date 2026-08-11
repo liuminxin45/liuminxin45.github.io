@@ -12,6 +12,7 @@ import PhotoArticlePage from './pages/PhotoArticle'
 import RecordsPage from './pages/Records'
 import RecordArticlePage from './pages/RecordArticle'
 import WorksPage from './pages/Works'
+import PodFlowStudioPage from './pages/PodFlowStudio'
 import useScrollReveal from './hooks/use-scroll-reveal'
 
 function HomePage() {
@@ -52,6 +53,7 @@ function AnimatedRoutes() {
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/works" element={<WorksPage />} />
+        <Route path="/works/podflow-studio" element={<PodFlowStudioPage />} />
         <Route path="/blogs" element={<RecordsPage />} />
         <Route path="/blogs/:slug" element={<RecordArticlePage />} />
         <Route path="/records" element={<LegacyRecordRedirect />} />

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1400" role="img" aria-labelledby="title desc">
+  <title id="title">PodFlow 晨报封面</title>
+  <desc id="desc">钴蓝色背景上的 PodFlow 晨报字样和声波图形</desc>
+  <rect width="1400" height="1400" fill="#1239b8"/>
+  <path d="M0 1020C240 860 430 1180 700 1010S1160 760 1400 930V1400H0Z" fill="#0a0a0a" opacity=".92"/>
+  <g fill="none" stroke="#f8f8f3" stroke-linecap="round" stroke-width="30">
+    <path d="M160 250v180M240 200v280M320 285v110M400 170v340M480 240v200"/>
+  </g>
+  <text x="150" y="760" fill="#f8f8f3" font-family="Arial, 'Microsoft YaHei', sans-serif" font-size="116" font-weight="700">PodFlow</text>
+  <text x="150" y="900" fill="#f8f8f3" font-family="Arial, 'Microsoft YaHei', sans-serif" font-size="116" font-weight="700">晨报</text>
+  <text x="150" y="1245" fill="#f8f8f3" font-family="Arial, 'Microsoft YaHei', sans-serif" font-size="40" letter-spacing="8">6 条快讯 · 1 条重点解读</text>
+</svg>
