@@ -9,15 +9,15 @@
     <itunes:image href="https://www.liuminxin.cn/images/podflow-studio/cover.svg"/>
     <link>https://www.liuminxin.cn/works/podflow-studio</link>
     <item>
-      <guid isPermaLink="false">2026-08-12</guid>
+      <guid isPermaLink="false">2026-08-12-remaster</guid>
       <title>PodFlow 晨报｜日全食如何成为一次公共科学实验</title>
       <description>六条科学、技术与经济快讯，加一条八月十二日欧洲日全食重点解读。</description>
       <pubDate>Tue, 11 Aug 2026 23:30:00 GMT</pubDate>
-      <itunes:duration>729</itunes:duration>
+      <itunes:duration>775</itunes:duration>
       <itunes:explicit>false</itunes:explicit>
-      <enclosure url="https://www.liuminxin.cn/podflow-studio/episodes/2026-08-12/2026-08-12.mp3" length="14587244" type="audio/mpeg"/>
-      <podcast:transcript url="https://www.liuminxin.cn/podflow-studio/episodes/2026-08-12/transcript.vtt" type="text/vtt"/>
-      <podcast:chapters url="https://www.liuminxin.cn/podflow-studio/episodes/2026-08-12/chapters.json" type="application/json+chapters"/>
+      <enclosure url="https://www.liuminxin.cn/podflow-studio/episodes/2026-08-12-remaster/2026-08-12-remaster.mp3" length="15508364" type="audio/mpeg"/>
+      <podcast:transcript url="https://www.liuminxin.cn/podflow-studio/episodes/2026-08-12-remaster/transcript.vtt" type="text/vtt"/>
+      <podcast:chapters url="https://www.liuminxin.cn/podflow-studio/episodes/2026-08-12-remaster/chapters.json" type="application/json+chapters"/>
     </item>
   </channel>
 </rss>

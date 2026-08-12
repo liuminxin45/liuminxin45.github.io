@@ -1,4 +1,5 @@
-import { readFileSync, renameSync, rmSync, writeFileSync } from 'node:fs'
+import { createHash } from 'node:crypto'
+import { existsSync, readFileSync, renameSync, rmSync, statSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -32,12 +33,15 @@ for (const episode of episodes) {
   if (seen.has(episode.id)) throw new Error(`duplicate episode id: ${episode.id}`)
   seen.add(episode.id)
   for (const field of ['audioUrl', 'coverUrl', 'transcriptUrl', 'chaptersUrl']) publicUrl(episode[field], `episode.${field}`)
+  if (new URL(episode.audioUrl).hostname !== 'www.liuminxin.cn') throw new Error(`${episode.id}: audioUrl must use www.liuminxin.cn`)
+  if (episode.qualityProfile !== 'podflow_morning_v3') throw new Error(`${episode.id}: qualityProfile must be podflow_morning_v3`)
+  if (!/^[a-f0-9]{64}$/.test(episode.audioSha256 || '')) throw new Error(`${episode.id}: audioSha256 is invalid`)
   if (!Number.isFinite(episode.durationSeconds) || episode.durationSeconds < 720 || episode.durationSeconds > 900) {
     throw new Error(`${episode.id}: durationSeconds must be within the 12 to 15 minute golden range`)
   }
-  const minimumAudioBytes = Math.floor(episode.durationSeconds * 16_000)
+  const minimumAudioBytes = Math.floor(episode.durationSeconds * 20_000)
   if (!Number.isInteger(episode.audioBytes) || episode.audioBytes < minimumAudioBytes) {
-    throw new Error(`${episode.id}: audioBytes is too small for a 128 kbps public MP3`)
+    throw new Error(`${episode.id}: audioBytes is too small for a 160 kbps public MP3`)
   }
   if (!Array.isArray(episode.sources) || episode.sources.length === 0) throw new Error(`${episode.id}: sources are required`)
   for (const source of episode.sources) {
@@ -47,6 +51,19 @@ for (const episode of episodes) {
   if (!Array.isArray(episode.credits) || episode.credits.some(credit => !credit.role || !credit.name)) throw new Error(`${episode.id}: credits are invalid`)
   if (episode.ttsProvider !== '豆包 BigTTS') throw new Error(`${episode.id}: public episodes must use the fixed 豆包 BigTTS voice baseline`)
   if (episode.aiAssisted !== true || typeof episode.explicit !== 'boolean') throw new Error(`${episode.id}: disclosure fields are invalid`)
+  if (!Array.isArray(episode.musicCredits) || episode.musicCredits.length === 0) throw new Error(`${episode.id}: musicCredits are required`)
+  for (const credit of episode.musicCredits) {
+    for (const field of ['title', 'artist', 'sourceUrl', 'license', 'licenseUrl', 'edited']) if (!credit[field]) throw new Error(`${episode.id}: music credit ${field} is required`)
+    publicUrl(credit.sourceUrl, `${episode.id}: music source URL`)
+    publicUrl(credit.licenseUrl, `${episode.id}: music license URL`)
+    if (credit.license !== 'CC0 1.0 Universal') throw new Error(`${episode.id}: music license must be CC0 1.0 Universal`)
+  }
+
+  const audioPath = path.join(publicDir, decodeURIComponent(new URL(episode.audioUrl).pathname).replace(/^\/+/, ''))
+  if (!existsSync(audioPath)) throw new Error(`${episode.id}: same-origin MP3 is missing`)
+  if (statSync(audioPath).size !== episode.audioBytes) throw new Error(`${episode.id}: audioBytes does not match the MP3`)
+  const digest = createHash('sha256').update(readFileSync(audioPath)).digest('hex')
+  if (digest !== episode.audioSha256) throw new Error(`${episode.id}: audioSha256 does not match the MP3`)
 
   const chapterUrl = new URL(episode.chaptersUrl)
   if (['liuminxin45.github.io', 'www.liuminxin.cn'].includes(chapterUrl.hostname)) {

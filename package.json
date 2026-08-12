@@ -8,6 +8,7 @@
     "records": "node scripts/generate-record-manifest.mjs",
     "podflow:content": "node scripts/generate-podflow-content.mjs",
     "podflow:verify": "node scripts/generate-podflow-content.mjs --strict",
+    "podflow:import": "node scripts/import-podflow-episode.mjs",
     "content": "npm run photos && npm run records && npm run podflow:content",
     "dev": "npm run content && vite",
     "build": "npm run content && tsc -b && vite build && node scripts/create-spa-fallback.mjs && node scripts/create-podflow-shell.mjs",

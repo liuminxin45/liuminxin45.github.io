@@ -12,7 +12,7 @@ import {
   Play,
   Rss,
 } from 'lucide-react'
-import { podflowEpisodes } from '@/content/podflow-episodes'
+import { loadPodFlowEpisodes, type PodFlowEpisode } from '@/content/podflow-episodes'
 
 type Chapter = { startTime: number; title: string }
 
@@ -49,7 +49,7 @@ const workflow = [
     index: '03',
     eyebrow: '成稿到声音',
     title: 'AI 配音和真人录音可以在同一期共存',
-    body: '逐段生成或替换声音，保留发音复核和听感调整。正式成片统一为 48 kHz、至少 128 kbps，并以 -16 LUFS 为响度目标。',
+    body: '用多情感音色逐段生成或替换声音，保留发音复核和听感调整。正式成片统一为 48 kHz、160 kbps，并以 -16 LUFS 为响度目标。',
     image: '/images/podflow-studio/produce.webp',
     alt: 'PodFlow Studio 分段声音制作界面',
   },
@@ -130,8 +130,10 @@ function useProductMetadata() {
 
 export default function PodFlowStudioPage() {
   useProductMetadata()
-  const episodes = podflowEpisodes
-  const [selectedId, setSelectedId] = useState(episodes[0]?.id || '')
+  const [episodes, setEpisodes] = useState<PodFlowEpisode[]>([])
+  const [episodesStatus, setEpisodesStatus] = useState<'loading' | 'ready' | 'error'>('loading')
+  const [episodesError, setEpisodesError] = useState('')
+  const [selectedId, setSelectedId] = useState('')
   const [chapters, setChapters] = useState<Chapter[]>([])
   const [chaptersStatus, setChaptersStatus] = useState<'loading' | 'ready' | 'error'>('loading')
   const audioRef = useRef<HTMLAudioElement>(null)
@@ -140,6 +142,23 @@ export default function PodFlowStudioPage() {
     () => episodes.find(episode => episode.id === selectedId) || episodes[0],
     [episodes, selectedId],
   )
+
+  useEffect(() => {
+    const controller = new AbortController()
+    loadPodFlowEpisodes(controller.signal)
+      .then(data => {
+        setEpisodes(data)
+        setSelectedId(data[0]?.id || '')
+        setEpisodesStatus('ready')
+      })
+      .catch(error => {
+        if (!(error instanceof DOMException && error.name === 'AbortError')) {
+          setEpisodesStatus('error')
+          setEpisodesError(error instanceof Error ? error.message : '节目清单读取失败')
+        }
+      })
+    return () => controller.abort()
+  }, [])
 
   useEffect(() => {
     if (window.location.hash !== '#episode-player' || !selected) return
@@ -169,6 +188,7 @@ export default function PodFlowStudioPage() {
     audioRef.current.currentTime = seconds
     void audioRef.current.play()
   }
+  const [audioError, setAudioError] = useState('')
 
   return (
     <main className="podflow-page">
@@ -185,13 +205,13 @@ export default function PodFlowStudioPage() {
             <div className="podflow-actions">
               <a
                 className="podflow-button podflow-button-primary"
-                href={episodes.length ? '#episode-player' : '#episodes'}
-                onClick={episodes.length ? event => {
+                href="#episode-player"
+                onClick={event => {
                   event.preventDefault()
                   scrollToPlayer()
-                } : undefined}
+                }}
               >
-                {episodes.length
+                {episodesStatus === 'ready' && episodes.length
                   ? <><Play size={17} fill="currentColor" aria-hidden="true" /> 试听最新一期</>
                   : <><Headphones size={17} aria-hidden="true" /> 查看节目状态</>}
               </a>
@@ -241,7 +261,9 @@ export default function PodFlowStudioPage() {
             <p>节目只发布经过事实、成稿、发音和听感终审的版本。mock 音频不会出现在这里。</p>
           </header>
 
-          {episodes.length === 0 && (
+          {episodesStatus === 'loading' && <div className="podflow-content-state" role="status">正在读取已终审节目...</div>}
+          {episodesStatus === 'error' && <div className="podflow-content-state is-error" role="alert"><h3>节目暂时无法读取</h3><p>{episodesError}。页面不会跳转到外站，请稍后在这里重试。</p></div>}
+          {episodesStatus === 'ready' && episodes.length === 0 && (
             <div className="podflow-content-state is-empty" data-reveal>
               <Headphones size={28} aria-hidden="true" />
               <h3>真实样片正在完成终审</h3>
@@ -257,9 +279,10 @@ export default function PodFlowStudioPage() {
                   <p className="soft-label">最新一期 · {formatDate(selected.publishedAt)}</p>
                   <h3>{selected.title}</h3>
                   <p>{selected.summary}</p>
-                  <audio ref={audioRef} controls preload="metadata" src={selected.audioUrl}>你的浏览器不支持音频播放。</audio>
+                  <audio ref={audioRef} controls preload="metadata" src={sameSiteAssetUrl(selected.audioUrl)} onError={() => setAudioError('音频暂时无法加载，请稍后重试。页面不会跳转到外部播放器。')}>你的浏览器不支持音频播放。</audio>
+                  {audioError && <p className="podflow-audio-error" role="alert">{audioError}</p>}
                   <div className="podflow-episode-links">
-                    <a href={selected.transcriptUrl}><FileText size={15} aria-hidden="true" /> 文字稿</a>
+                    <a href={sameSiteAssetUrl(selected.transcriptUrl)}><FileText size={15} aria-hidden="true" /> 文字稿</a>
                     <a href={FEED_URL}><Rss size={15} aria-hidden="true" /> RSS</a>
                   </div>
                 </div>
@@ -285,6 +308,7 @@ export default function PodFlowStudioPage() {
                     {selected.sources.map(source => <li key={source.url}><a href={source.url} target="_blank" rel="noreferrer">{source.title}<ExternalLink size={12} aria-hidden="true" /></a></li>)}
                   </ul>
                   <p className="podflow-disclosure">AI 辅助整理与初稿。配音服务：{selected.ttsProvider}。事实、成稿、发音和听感由人工终审。</p>
+                  {selected.musicCredits.map(credit => <p className="podflow-disclosure" key={`${credit.artist}-${credit.title}`}>音乐：<a href={credit.sourceUrl} target="_blank" rel="noreferrer">{credit.title}</a>，{credit.artist}，<a href={credit.licenseUrl} target="_blank" rel="noreferrer">{credit.license}</a>。{credit.edited}</p>)}
                 </div>
               </div>
             </div>
@@ -297,6 +321,7 @@ export default function PodFlowStudioPage() {
                   setSelectedId(episode.id)
                   setChapters([])
                   setChaptersStatus('loading')
+                  setAudioError('')
                 }}>
                   <span>{formatDate(episode.publishedAt)}</span>
                   <strong>{episode.title}</strong>

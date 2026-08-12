@@ -2444,6 +2444,16 @@ html.dark .podflow-content-state.is-error {
   line-height: 1.7;
 }
 
+.podflow-audio-error {
+  margin-top: 0.65rem;
+  color: #b42318;
+  font-size: 0.9rem;
+}
+
+html.dark .podflow-audio-error {
+  color: #ffb4a9;
+}
+
 .podflow-episode-index {
   display: grid;
   margin-top: 24px;

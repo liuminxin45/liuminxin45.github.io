@@ -1,15 +1,15 @@
 [
   {
-    "id": "2026-08-12",
+    "id": "2026-08-12-remaster",
     "title": "PodFlow 晨报｜日全食如何成为一次公共科学实验",
     "summary": "六条科学、技术与经济快讯，加一条八月十二日欧洲日全食重点解读。",
     "publishedAt": "2026-08-12T07:30:00+08:00",
-    "durationSeconds": 729,
-    "audioUrl": "https://www.liuminxin.cn/podflow-studio/episodes/2026-08-12/2026-08-12.mp3",
-    "audioBytes": 14587244,
-    "coverUrl": "https://www.liuminxin.cn/podflow-studio/episodes/2026-08-12/cover.png",
-    "transcriptUrl": "https://www.liuminxin.cn/podflow-studio/episodes/2026-08-12/transcript.vtt",
-    "chaptersUrl": "https://www.liuminxin.cn/podflow-studio/episodes/2026-08-12/chapters.json",
+    "durationSeconds": 775,
+    "audioUrl": "https://www.liuminxin.cn/podflow-studio/episodes/2026-08-12-remaster/2026-08-12-remaster.mp3",
+    "audioBytes": 15508364,
+    "coverUrl": "https://www.liuminxin.cn/podflow-studio/episodes/2026-08-12-remaster/cover.png",
+    "transcriptUrl": "https://www.liuminxin.cn/podflow-studio/episodes/2026-08-12-remaster/transcript.vtt",
+    "chaptersUrl": "https://www.liuminxin.cn/podflow-studio/episodes/2026-08-12-remaster/chapters.json",
     "sources": [
       {
         "title": "Google Store: Google Pixel 11",
@@ -60,6 +60,25 @@
     ],
     "ttsProvider": "豆包 BigTTS",
     "aiAssisted": true,
-    "explicit": false
+    "explicit": false,
+    "qualityProfile": "podflow_morning_v3",
+    "audioSha256": "10eedbaf93b599b140f238aa583f526d6167981808bb8d7f5a7f75840dc49d3c",
+    "musicCredits": [
+      {
+        "title": "Quick Spark",
+        "artist": "Ondrosik",
+        "sourceUrl": "https://ondrosik.sk/music/",
+        "license": "CC0 1.0 Universal",
+        "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "edited": "经裁剪、淡入淡出及响度处理"
+      }
+    ],
+    "approval": {
+      "status": "approved",
+      "audio_sha256": "10eedbaf93b599b140f238aa583f526d6167981808bb8d7f5a7f75840dc49d3c",
+      "reviewed_at": "2026-08-12T14:19:44.070191+08:00",
+      "reviewer": "Codex full-listen review",
+      "notes": "完整试听全片并重点复核开场、五个快讯边界、深度桥接和片尾；人声清楚，节奏自然，音乐可感知且未遮盖语言。"
+    }
   }
 ]

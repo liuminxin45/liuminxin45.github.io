@@ -1,0 +1,488 @@
+{
+  "qualityProfile": "podflow_morning_v3",
+  "audioSha256": "10eedbaf93b599b140f238aa583f526d6167981808bb8d7f5a7f75840dc49d3c",
+  "clipMetrics": [
+    {
+      "id": "segment_001__001",
+      "durationSeconds": 21.864,
+      "status": "ok",
+      "chars_per_second": 4.76,
+      "energy_range_db": 14.34,
+      "issues": []
+    },
+    {
+      "id": "segment_001__002",
+      "durationSeconds": 16.128,
+      "status": "ok",
+      "chars_per_second": 4.53,
+      "energy_range_db": 12.47,
+      "issues": []
+    },
+    {
+      "id": "segment_001__003",
+      "durationSeconds": 16.968,
+      "status": "ok",
+      "chars_per_second": 4.48,
+      "energy_range_db": 13.04,
+      "issues": []
+    },
+    {
+      "id": "segment_002__001",
+      "durationSeconds": 10.632,
+      "status": "ok",
+      "chars_per_second": 4.7,
+      "energy_range_db": 21.5,
+      "issues": []
+    },
+    {
+      "id": "segment_002__002",
+      "durationSeconds": 17.976,
+      "status": "ok",
+      "chars_per_second": 4.51,
+      "energy_range_db": 15.39,
+      "issues": []
+    },
+    {
+      "id": "segment_002__003",
+      "durationSeconds": 21.384,
+      "status": "ok",
+      "chars_per_second": 4.68,
+      "energy_range_db": 13.02,
+      "issues": []
+    },
+    {
+      "id": "segment_003__001",
+      "durationSeconds": 12.864,
+      "status": "ok",
+      "chars_per_second": 4.66,
+      "energy_range_db": 10.58,
+      "issues": []
+    },
+    {
+      "id": "segment_003__002",
+      "durationSeconds": 19.2,
+      "status": "ok",
+      "chars_per_second": 4.95,
+      "energy_range_db": 17.19,
+      "issues": []
+    },
+    {
+      "id": "segment_003__003",
+      "durationSeconds": 19.464,
+      "status": "ok",
+      "chars_per_second": 4.21,
+      "energy_range_db": 12.38,
+      "issues": []
+    },
+    {
+      "id": "segment_004__001",
+      "durationSeconds": 12.096,
+      "status": "ok",
+      "chars_per_second": 4.3,
+      "energy_range_db": 10.51,
+      "issues": []
+    },
+    {
+      "id": "segment_004__002",
+      "durationSeconds": 20.76,
+      "status": "ok",
+      "chars_per_second": 4.43,
+      "energy_range_db": 13.01,
+      "issues": []
+    },
+    {
+      "id": "segment_004__003",
+      "durationSeconds": 18.096,
+      "status": "ok",
+      "chars_per_second": 4.75,
+      "energy_range_db": 11.52,
+      "issues": []
+    },
+    {
+      "id": "segment_005__001",
+      "durationSeconds": 8.352,
+      "status": "ok",
+      "chars_per_second": 4.67,
+      "energy_range_db": 13.44,
+      "issues": []
+    },
+    {
+      "id": "segment_005__002",
+      "durationSeconds": 20.64,
+      "status": "ok",
+      "chars_per_second": 4.7,
+      "energy_range_db": 10.92,
+      "issues": []
+    },
+    {
+      "id": "segment_005__003",
+      "durationSeconds": 9.816,
+      "status": "ok",
+      "chars_per_second": 5.2,
+      "energy_range_db": 15.15,
+      "issues": []
+    },
+    {
+      "id": "segment_005__004",
+      "durationSeconds": 11.28,
+      "status": "ok",
+      "chars_per_second": 4.43,
+      "energy_range_db": 15.47,
+      "issues": []
+    },
+    {
+      "id": "segment_006__001",
+      "durationSeconds": 13.68,
+      "status": "ok",
+      "chars_per_second": 4.53,
+      "energy_range_db": 9.99,
+      "issues": []
+    },
+    {
+      "id": "segment_006__002",
+      "durationSeconds": 16.92,
+      "status": "ok",
+      "chars_per_second": 4.96,
+      "energy_range_db": 19.15,
+      "issues": []
+    },
+    {
+      "id": "segment_006__003",
+      "durationSeconds": 19.848,
+      "status": "ok",
+      "chars_per_second": 4.69,
+      "energy_range_db": 18.97,
+      "issues": []
+    },
+    {
+      "id": "segment_007__001",
+      "durationSeconds": 10.392,
+      "status": "ok",
+      "chars_per_second": 5.2,
+      "energy_range_db": 11.46,
+      "issues": []
+    },
+    {
+      "id": "segment_007__002",
+      "durationSeconds": 16.248,
+      "status": "ok",
+      "chars_per_second": 4.55,
+      "energy_range_db": 17.23,
+      "issues": []
+    },
+    {
+      "id": "segment_007__003",
+      "durationSeconds": 14.688,
+      "status": "ok",
+      "chars_per_second": 4.49,
+      "energy_range_db": 11.59,
+      "issues": []
+    },
+    {
+      "id": "segment_007__004",
+      "durationSeconds": 11.664,
+      "status": "ok",
+      "chars_per_second": 4.97,
+      "energy_range_db": 9.56,
+      "issues": []
+    },
+    {
+      "id": "segment_008__001",
+      "durationSeconds": 14.88,
+      "status": "ok",
+      "chars_per_second": 4.17,
+      "energy_range_db": 10.57,
+      "issues": []
+    },
+    {
+      "id": "segment_008__002",
+      "durationSeconds": 8.688,
+      "status": "ok",
+      "chars_per_second": 4.26,
+      "energy_range_db": 15.11,
+      "issues": []
+    },
+    {
+      "id": "segment_008__003",
+      "durationSeconds": 14.856,
+      "status": "ok",
+      "chars_per_second": 4.85,
+      "energy_range_db": 16.24,
+      "issues": []
+    },
+    {
+      "id": "segment_008__004",
+      "durationSeconds": 17.952,
+      "status": "ok",
+      "chars_per_second": 3.9,
+      "energy_range_db": 11.44,
+      "issues": []
+    },
+    {
+      "id": "segment_008__005",
+      "durationSeconds": 19.824,
+      "status": "ok",
+      "chars_per_second": 5.04,
+      "energy_range_db": 12.58,
+      "issues": []
+    },
+    {
+      "id": "segment_008__006",
+      "durationSeconds": 9.216,
+      "status": "ok",
+      "chars_per_second": 4.56,
+      "energy_range_db": 10.77,
+      "issues": []
+    },
+    {
+      "id": "segment_008__007",
+      "durationSeconds": 24.576,
+      "status": "ok",
+      "chars_per_second": 4.19,
+      "energy_range_db": 12.6,
+      "issues": []
+    },
+    {
+      "id": "segment_008__008",
+      "durationSeconds": 21.792,
+      "status": "ok",
+      "chars_per_second": 4.31,
+      "energy_range_db": 16.76,
+      "issues": []
+    },
+    {
+      "id": "segment_008__009",
+      "durationSeconds": 12.864,
+      "status": "ok",
+      "chars_per_second": 3.96,
+      "energy_range_db": 22.9,
+      "issues": []
+    },
+    {
+      "id": "segment_008__010",
+      "durationSeconds": 23.808,
+      "status": "ok",
+      "chars_per_second": 4.03,
+      "energy_range_db": 11.63,
+      "issues": []
+    },
+    {
+      "id": "segment_008__011",
+      "durationSeconds": 17.088,
+      "status": "ok",
+      "chars_per_second": 4.68,
+      "energy_range_db": 10.99,
+      "issues": []
+    },
+    {
+      "id": "segment_008__012",
+      "durationSeconds": 11.76,
+      "status": "ok",
+      "chars_per_second": 4.34,
+      "energy_range_db": 17.4,
+      "issues": []
+    },
+    {
+      "id": "segment_008__013",
+      "durationSeconds": 12.312,
+      "status": "ok",
+      "chars_per_second": 4.3,
+      "energy_range_db": 15.02,
+      "issues": []
+    },
+    {
+      "id": "segment_008__014",
+      "durationSeconds": 15.0,
+      "status": "ok",
+      "chars_per_second": 4.33,
+      "energy_range_db": 14.32,
+      "issues": []
+    },
+    {
+      "id": "segment_008__015",
+      "durationSeconds": 20.856,
+      "status": "ok",
+      "chars_per_second": 4.46,
+      "energy_range_db": 14.71,
+      "issues": []
+    },
+    {
+      "id": "segment_008__016",
+      "durationSeconds": 9.312,
+      "status": "ok",
+      "chars_per_second": 4.3,
+      "energy_range_db": 12.53,
+      "issues": []
+    },
+    {
+      "id": "segment_008__017",
+      "durationSeconds": 23.304,
+      "status": "ok",
+      "chars_per_second": 4.21,
+      "energy_range_db": 13.32,
+      "issues": []
+    },
+    {
+      "id": "segment_008__018",
+      "durationSeconds": 17.592,
+      "status": "ok",
+      "chars_per_second": 4.04,
+      "energy_range_db": 12.88,
+      "issues": []
+    },
+    {
+      "id": "segment_008__019",
+      "durationSeconds": 11.976,
+      "status": "ok",
+      "chars_per_second": 4.43,
+      "energy_range_db": 13.1,
+      "issues": []
+    },
+    {
+      "id": "segment_008__020",
+      "durationSeconds": 25.368,
+      "status": "ok",
+      "chars_per_second": 4.97,
+      "energy_range_db": 12.67,
+      "issues": []
+    },
+    {
+      "id": "segment_008__021",
+      "durationSeconds": 18.408,
+      "status": "ok",
+      "chars_per_second": 4.83,
+      "energy_range_db": 8.39,
+      "issues": []
+    },
+    {
+      "id": "segment_008__022",
+      "durationSeconds": 8.904,
+      "status": "ok",
+      "chars_per_second": 4.38,
+      "energy_range_db": 15.72,
+      "issues": []
+    },
+    {
+      "id": "segment_009__001",
+      "durationSeconds": 7.2,
+      "status": "ok",
+      "chars_per_second": 5.28,
+      "energy_range_db": 11.19,
+      "issues": []
+    },
+    {
+      "id": "segment_009__002",
+      "durationSeconds": 9.504,
+      "status": "ok",
+      "chars_per_second": 4.84,
+      "energy_range_db": 8.83,
+      "issues": []
+    },
+    {
+      "id": "segment_009__003",
+      "durationSeconds": 1.824,
+      "status": "ok",
+      "chars_per_second": 3.84,
+      "energy_range_db": 9.18,
+      "issues": []
+    }
+  ],
+  "musicEvents": {
+    "intro": 1,
+    "stings": 5,
+    "bridge": 1,
+    "outro": 1
+  },
+  "output": {
+    "duration_seconds": 775.358,
+    "sample_rate_hz": 48000,
+    "bitrate_kbps": 160,
+    "target_lufs": -16.0,
+    "true_peak_db": -1.0,
+    "file_size": 15508364,
+    "measured": {
+      "codec": "mp3",
+      "sample_rate_hz": 48000,
+      "bitrate_kbps": 160,
+      "duration_seconds": 775.392,
+      "file_size": 15508364,
+      "integrated_lufs": -16.47,
+      "true_peak_db": -1.38
+    }
+  },
+  "status": "passed",
+  "checks": [
+    {
+      "level": "pass",
+      "message": "Audio file ready"
+    },
+    {
+      "level": "pass",
+      "message": "Cover art ready"
+    },
+    {
+      "level": "pass",
+      "message": "Title set"
+    },
+    {
+      "level": "pass",
+      "message": "9 segments ready"
+    },
+    {
+      "level": "pass",
+      "message": "Production plan v3 ready"
+    },
+    {
+      "level": "pass",
+      "message": "All TTS clips are at most 30 seconds"
+    },
+    {
+      "level": "pass",
+      "message": "Speech rate and non-silent dynamics passed"
+    },
+    {
+      "level": "pass",
+      "message": "Exactly 5 quick-news stings rendered"
+    },
+    {
+      "level": "pass",
+      "message": "Exactly 1 deep-dive bridge rendered"
+    },
+    {
+      "level": "pass",
+      "message": "Intro cue rendered with voice overlap"
+    },
+    {
+      "level": "pass",
+      "message": "Outro cue rendered with voice overlap"
+    },
+    {
+      "level": "pass",
+      "message": "Final codec is MP3"
+    },
+    {
+      "level": "pass",
+      "message": "Final sample rate is 48 kHz"
+    },
+    {
+      "level": "pass",
+      "message": "Final MP3 bitrate is 160 kbps"
+    },
+    {
+      "level": "pass",
+      "message": "Measured loudness is within -16 LUFS ±1"
+    },
+    {
+      "level": "pass",
+      "message": "Measured true peak is at most -1 dBTP"
+    },
+    {
+      "level": "pass",
+      "message": "Audio is within the 12-15 minute range: 775.4s"
+    },
+    {
+      "level": "pass",
+      "message": "Segment density OK: avg 373 chars/segment"
+    }
+  ]
+}
