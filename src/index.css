@@ -2330,6 +2330,7 @@ html.dark .podflow-content-state.is-error {
 }
 
 .podflow-player {
+  scroll-margin-top: 104px;
   margin-top: 42px;
   border: 1px solid var(--line-strong);
   border-radius: 16px;
@@ -2415,6 +2416,13 @@ html.dark .podflow-content-state.is-error {
 
 .podflow-chapters button {
   cursor: pointer;
+}
+
+.podflow-chapter-state {
+  color: var(--faint);
+  font-size: 13px;
+  line-height: 1.6;
+  padding: 9px 10px;
 }
 
 .podflow-chapters button:hover,

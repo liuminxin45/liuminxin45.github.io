@@ -24,7 +24,7 @@ const jsonLd = JSON.stringify([
     '@type': 'PodcastSeries',
     name: 'PodFlow 晨报',
     url: canonical,
-    ...(episodes.length ? { webFeed: 'https://liuminxin45.github.io/podflow-studio/feed.xml' } : {}),
+    ...(episodes.length ? { webFeed: 'https://www.liuminxin.cn/podflow-studio/feed.xml' } : {}),
   },
 ])
 

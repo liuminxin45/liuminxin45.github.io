@@ -32,5 +32,5 @@
 - 制作：PodFlow Studio
 - 配音服务：豆包 BigTTS
 - AI 辅助：素材整理、事实卡片与初稿生成；事实、成稿、发音和听感已完成终审
-- 音频：https://github.com/liuminxin45/podflow-studio/releases/download/2026-08-12/2026-08-12.mp3
+- 音频：https://www.liuminxin.cn/podflow-studio/episodes/2026-08-12/2026-08-12.mp3
 - 封面：cover.png

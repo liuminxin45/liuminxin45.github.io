@@ -12,34 +12,21 @@ import {
   Play,
   Rss,
 } from 'lucide-react'
+import { podflowEpisodes } from '@/content/podflow-episodes'
 
-type Source = { title: string; url: string }
-type Credit = { role: string; name: string }
-type Episode = {
-  id: string
-  title: string
-  summary: string
-  publishedAt: string
-  durationSeconds: number
-  audioUrl: string
-  audioBytes: number
-  coverUrl: string
-  transcriptUrl: string
-  chaptersUrl: string
-  sources: Source[]
-  credits: Credit[]
-  ttsProvider: string
-  aiAssisted: boolean
-  explicit: boolean
-}
 type Chapter = { startTime: number; title: string }
 
 const SITE_URL = 'https://www.liuminxin.cn/works/podflow-studio'
 const RELEASE_URL = 'https://github.com/liuminxin45/podflow-studio/releases/latest'
 const SOURCE_URL = 'https://github.com/liuminxin45/podflow-studio'
-const CONTENT_BASE_URL = 'https://liuminxin45.github.io/podflow-studio'
-const EPISODE_MANIFEST_URL = `${CONTENT_BASE_URL}/episodes.json`
-const FEED_URL = `${CONTENT_BASE_URL}/feed.xml`
+const FEED_URL = '/podflow-studio/feed.xml'
+
+function scrollToPlayer() {
+  window.history.replaceState(null, '', '#episode-player')
+  window.requestAnimationFrame(() => {
+    document.getElementById('episode-player')?.scrollIntoView({ block: 'start' })
+  })
+}
 
 const workflow = [
   {
@@ -87,10 +74,10 @@ function formatDate(value: string) {
 }
 
 function sameSiteAssetUrl(value: string) {
-  const url = new URL(value)
+  const url = new URL(value, window.location.origin)
   return ['www.liuminxin.cn', 'liuminxin45.github.io'].includes(url.hostname)
     ? `${url.pathname}${url.search}`
-    : value
+    : url.href
 }
 
 function useProductMetadata() {
@@ -143,31 +130,11 @@ function useProductMetadata() {
 
 export default function PodFlowStudioPage() {
   useProductMetadata()
-  const [episodes, setEpisodes] = useState<Episode[]>([])
-  const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading')
-  const [selectedId, setSelectedId] = useState('')
+  const episodes = podflowEpisodes
+  const [selectedId, setSelectedId] = useState(episodes[0]?.id || '')
   const [chapters, setChapters] = useState<Chapter[]>([])
+  const [chaptersStatus, setChaptersStatus] = useState<'loading' | 'ready' | 'error'>('loading')
   const audioRef = useRef<HTMLAudioElement>(null)
-
-  useEffect(() => {
-    const controller = new AbortController()
-    fetch(EPISODE_MANIFEST_URL, { signal: controller.signal })
-      .then(response => {
-        if (!response.ok) throw new Error(`HTTP ${response.status}`)
-        return response.json() as Promise<Episode[]>
-      })
-      .then(data => {
-        if (!Array.isArray(data)) throw new Error('节目清单格式无效')
-        setEpisodes(data)
-        setSelectedId(data[0]?.id || '')
-        setStatus('ready')
-      })
-      .catch(error => {
-        if (error instanceof DOMException && error.name === 'AbortError') return
-        setStatus('error')
-      })
-    return () => controller.abort()
-  }, [])
 
   const selected = useMemo(
     () => episodes.find(episode => episode.id === selectedId) || episodes[0],
@@ -175,13 +142,24 @@ export default function PodFlowStudioPage() {
   )
 
   useEffect(() => {
+    if (window.location.hash !== '#episode-player' || !selected) return
+    scrollToPlayer()
+  }, [selected])
+
+  useEffect(() => {
     if (!selected) return
     const controller = new AbortController()
     fetch(sameSiteAssetUrl(selected.chaptersUrl), { signal: controller.signal })
       .then(response => response.ok ? response.json() : Promise.reject(new Error('章节读取失败')))
-      .then(data => setChapters(Array.isArray(data.chapters) ? data.chapters : []))
+      .then(data => {
+        setChapters(Array.isArray(data.chapters) ? data.chapters : [])
+        setChaptersStatus('ready')
+      })
       .catch(error => {
-        if (!(error instanceof DOMException && error.name === 'AbortError')) setChapters([])
+        if (!(error instanceof DOMException && error.name === 'AbortError')) {
+          setChapters([])
+          setChaptersStatus('error')
+        }
       })
     return () => controller.abort()
   }, [selected])
@@ -205,7 +183,14 @@ export default function PodFlowStudioPage() {
             <h1 id="podflow-title">把每天的新闻，做成一档能长期更新的节目。</h1>
             <p className="podflow-lead">PodFlow Studio 把素材发现、事实核验、成稿、声音制作和发布包放进同一个桌面工作台。关键节点留给人判断，重复步骤交给流程。</p>
             <div className="podflow-actions">
-              <a className="podflow-button podflow-button-primary" href={episodes.length ? '#episode-player' : '#episodes'}>
+              <a
+                className="podflow-button podflow-button-primary"
+                href={episodes.length ? '#episode-player' : '#episodes'}
+                onClick={episodes.length ? event => {
+                  event.preventDefault()
+                  scrollToPlayer()
+                } : undefined}
+              >
                 {episodes.length
                   ? <><Play size={17} fill="currentColor" aria-hidden="true" /> 试听最新一期</>
                   : <><Headphones size={17} aria-hidden="true" /> 查看节目状态</>}
@@ -256,9 +241,7 @@ export default function PodFlowStudioPage() {
             <p>节目只发布经过事实、成稿、发音和听感终审的版本。mock 音频不会出现在这里。</p>
           </header>
 
-          {status === 'loading' && <div className="podflow-content-state" role="status">正在读取节目清单…</div>}
-          {status === 'error' && <div className="podflow-content-state is-error" role="alert">节目清单暂时无法读取。你仍可以通过 RSS 稍后重试。</div>}
-          {status === 'ready' && episodes.length === 0 && (
+          {episodes.length === 0 && (
             <div className="podflow-content-state is-empty" data-reveal>
               <Headphones size={28} aria-hidden="true" />
               <h3>真实样片正在完成终审</h3>
@@ -285,6 +268,8 @@ export default function PodFlowStudioPage() {
                 <div>
                   <h4>章节</h4>
                   <ol className="podflow-chapters">
+                    {chaptersStatus === 'loading' && <li className="podflow-chapter-state" role="status">正在读取章节...</li>}
+                    {chaptersStatus === 'error' && <li className="podflow-chapter-state" role="alert">章节暂时无法读取，仍可使用播放器拖动进度。</li>}
                     {chapters.map(chapter => (
                       <li key={`${chapter.startTime}-${chapter.title}`}>
                         <button type="button" onClick={() => jumpTo(chapter.startTime)}>
@@ -308,7 +293,11 @@ export default function PodFlowStudioPage() {
           {episodes.length > 1 && (
             <div className="podflow-episode-index" aria-label="往期节目">
               {episodes.map(episode => (
-                <button type="button" key={episode.id} className={episode.id === selected?.id ? 'is-active' : ''} onClick={() => setSelectedId(episode.id)}>
+                <button type="button" key={episode.id} className={episode.id === selected?.id ? 'is-active' : ''} onClick={() => {
+                  setSelectedId(episode.id)
+                  setChapters([])
+                  setChaptersStatus('loading')
+                }}>
                   <span>{formatDate(episode.publishedAt)}</span>
                   <strong>{episode.title}</strong>
                   <span><Clock3 size={13} aria-hidden="true" /> {formatDuration(episode.durationSeconds)}</span>

@@ -15,7 +15,7 @@
       <pubDate>Tue, 11 Aug 2026 23:30:00 GMT</pubDate>
       <itunes:duration>729</itunes:duration>
       <itunes:explicit>false</itunes:explicit>
-      <enclosure url="https://github.com/liuminxin45/podflow-studio/releases/download/2026-08-12/2026-08-12.mp3" length="14587244" type="audio/mpeg"/>
+      <enclosure url="https://www.liuminxin.cn/podflow-studio/episodes/2026-08-12/2026-08-12.mp3" length="14587244" type="audio/mpeg"/>
       <podcast:transcript url="https://www.liuminxin.cn/podflow-studio/episodes/2026-08-12/transcript.vtt" type="text/vtt"/>
       <podcast:chapters url="https://www.liuminxin.cn/podflow-studio/episodes/2026-08-12/chapters.json" type="application/json+chapters"/>
     </item>
