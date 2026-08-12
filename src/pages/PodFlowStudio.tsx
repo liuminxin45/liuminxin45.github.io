@@ -37,6 +37,9 @@ type Chapter = { startTime: number; title: string }
 const SITE_URL = 'https://www.liuminxin.cn/works/podflow-studio'
 const RELEASE_URL = 'https://github.com/liuminxin45/podflow-studio/releases/latest'
 const SOURCE_URL = 'https://github.com/liuminxin45/podflow-studio'
+const CONTENT_BASE_URL = 'https://liuminxin45.github.io/podflow-studio'
+const EPISODE_MANIFEST_URL = `${CONTENT_BASE_URL}/episodes.json`
+const FEED_URL = `${CONTENT_BASE_URL}/feed.xml`
 
 const workflow = [
   {
@@ -148,7 +151,7 @@ export default function PodFlowStudioPage() {
 
   useEffect(() => {
     const controller = new AbortController()
-    fetch('/podflow-studio/episodes.json', { signal: controller.signal })
+    fetch(EPISODE_MANIFEST_URL, { signal: controller.signal })
       .then(response => {
         if (!response.ok) throw new Error(`HTTP ${response.status}`)
         return response.json() as Promise<Episode[]>
@@ -274,7 +277,7 @@ export default function PodFlowStudioPage() {
                   <audio ref={audioRef} controls preload="metadata" src={selected.audioUrl}>你的浏览器不支持音频播放。</audio>
                   <div className="podflow-episode-links">
                     <a href={selected.transcriptUrl}><FileText size={15} aria-hidden="true" /> 文字稿</a>
-                    <a href="/podflow-studio/feed.xml"><Rss size={15} aria-hidden="true" /> RSS</a>
+                    <a href={FEED_URL}><Rss size={15} aria-hidden="true" /> RSS</a>
                   </div>
                 </div>
               </div>
