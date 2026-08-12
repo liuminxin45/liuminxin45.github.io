@@ -6,7 +6,7 @@ const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const source = readFileSync(path.join(rootDir, 'dist', 'index.html'), 'utf8')
 const episodes = JSON.parse(readFileSync(path.join(rootDir, 'public', 'podflow-studio', 'episodes.json'), 'utf8'))
 const outputDir = path.join(rootDir, 'dist', 'works', 'podflow-studio')
-const canonical = 'https://liuminxin45.github.io/works/podflow-studio'
+const canonical = 'https://www.liuminxin.cn/works/podflow-studio'
 const description = 'PodFlow Studio 是本地优先的 AI 新闻播客制作工作台，从可追溯素材、事实卡片和可编辑成稿，到配音、音频成片和 RSS 发布包。'
 const jsonLd = JSON.stringify([
   {
@@ -24,7 +24,7 @@ const jsonLd = JSON.stringify([
     '@type': 'PodcastSeries',
     name: 'PodFlow 晨报',
     url: canonical,
-    ...(episodes.length ? { webFeed: 'https://liuminxin45.github.io/podflow-studio/feed.xml' } : {}),
+    ...(episodes.length ? { webFeed: 'https://www.liuminxin.cn/podflow-studio/feed.xml' } : {}),
   },
 ])
 
@@ -35,11 +35,11 @@ const meta = `
     <meta property="og:title" content="PodFlow Studio｜把每天的新闻做成一档节目" />
     <meta property="og:description" content="${description}" />
     <meta property="og:url" content="${canonical}" />
-    <meta property="og:image" content="https://liuminxin45.github.io/images/podflow-studio/og.svg" />
+    <meta property="og:image" content="https://www.liuminxin.cn/images/podflow-studio/og.svg" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="PodFlow Studio｜把每天的新闻做成一档节目" />
     <meta name="twitter:description" content="${description}" />
-    <meta name="twitter:image" content="https://liuminxin45.github.io/images/podflow-studio/og.svg" />
+    <meta name="twitter:image" content="https://www.liuminxin.cn/images/podflow-studio/og.svg" />
     <script type="application/ld+json">${jsonLd}</script>`
 const html = source
   .replace(/<title>.*?<\/title>/, '<title>PodFlow Studio｜把每天的新闻做成一档节目</title>')

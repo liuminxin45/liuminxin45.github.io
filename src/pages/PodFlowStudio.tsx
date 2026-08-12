@@ -34,7 +34,7 @@ type Episode = {
 }
 type Chapter = { startTime: number; title: string }
 
-const SITE_URL = 'https://liuminxin45.github.io/works/podflow-studio'
+const SITE_URL = 'https://www.liuminxin.cn/works/podflow-studio'
 const RELEASE_URL = 'https://github.com/liuminxin45/podflow-studio/releases/latest'
 const SOURCE_URL = 'https://github.com/liuminxin45/podflow-studio'
 
@@ -83,6 +83,13 @@ function formatDate(value: string) {
   return new Intl.DateTimeFormat('zh-CN', { month: 'long', day: 'numeric' }).format(new Date(value))
 }
 
+function sameSiteAssetUrl(value: string) {
+  const url = new URL(value)
+  return ['www.liuminxin.cn', 'liuminxin45.github.io'].includes(url.hostname)
+    ? `${url.pathname}${url.search}`
+    : value
+}
+
 function useProductMetadata() {
   useEffect(() => {
     const previousTitle = document.title
@@ -92,10 +99,10 @@ function useProductMetadata() {
       'og:title': 'PodFlow Studio｜把每天的新闻做成一档节目',
       'og:description': '从可追溯素材到可发布成片，一条本地优先的新闻播客工作流。',
       'og:url': SITE_URL,
-      'og:image': 'https://liuminxin45.github.io/images/podflow-studio/og.svg',
+      'og:image': 'https://www.liuminxin.cn/images/podflow-studio/og.svg',
       'twitter:title': 'PodFlow Studio｜把每天的新闻做成一档节目',
       'twitter:description': '从可追溯素材到可发布成片，一条本地优先的新闻播客工作流。',
-      'twitter:image': 'https://liuminxin45.github.io/images/podflow-studio/og.svg',
+      'twitter:image': 'https://www.liuminxin.cn/images/podflow-studio/og.svg',
     }
     const previousMeta: Array<{ element: HTMLMetaElement; content: string; created: boolean }> = []
     for (const [name, content] of Object.entries(values)) {
@@ -167,7 +174,7 @@ export default function PodFlowStudioPage() {
   useEffect(() => {
     if (!selected) return
     const controller = new AbortController()
-    fetch(selected.chaptersUrl, { signal: controller.signal })
+    fetch(sameSiteAssetUrl(selected.chaptersUrl), { signal: controller.signal })
       .then(response => response.ok ? response.json() : Promise.reject(new Error('章节读取失败')))
       .then(data => setChapters(Array.isArray(data.chapters) ? data.chapters : []))
       .catch(error => {
@@ -195,8 +202,10 @@ export default function PodFlowStudioPage() {
             <h1 id="podflow-title">把每天的新闻，做成一档能长期更新的节目。</h1>
             <p className="podflow-lead">PodFlow Studio 把素材发现、事实核验、成稿、声音制作和发布包放进同一个桌面工作台。关键节点留给人判断，重复步骤交给流程。</p>
             <div className="podflow-actions">
-              <a className="podflow-button podflow-button-primary" href="#episodes">
-                <Play size={17} fill="currentColor" aria-hidden="true" /> 试听最新一期
+              <a className="podflow-button podflow-button-primary" href={episodes.length ? '#episode-player' : '#episodes'}>
+                {episodes.length
+                  ? <><Play size={17} fill="currentColor" aria-hidden="true" /> 试听最新一期</>
+                  : <><Headphones size={17} aria-hidden="true" /> 查看节目状态</>}
               </a>
               <a className="podflow-button podflow-button-secondary" href={RELEASE_URL} target="_blank" rel="noreferrer">
                 <Download size={17} aria-hidden="true" /> 下载 Windows

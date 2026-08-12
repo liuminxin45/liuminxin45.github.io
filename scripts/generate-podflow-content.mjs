@@ -33,7 +33,7 @@ for (const episode of episodes) {
   seen.add(episode.id)
   for (const field of ['audioUrl', 'coverUrl', 'transcriptUrl', 'chaptersUrl']) publicUrl(episode[field], `episode.${field}`)
   if (!Number.isFinite(episode.durationSeconds) || episode.durationSeconds < 720 || episode.durationSeconds > 900) {
-    throw new Error(`${episode.id}: durationSeconds must be within the 12–15 minute golden range`)
+    throw new Error(`${episode.id}: durationSeconds must be within the 12 to 15 minute golden range`)
   }
   const minimumAudioBytes = Math.floor(episode.durationSeconds * 16_000)
   if (!Number.isInteger(episode.audioBytes) || episode.audioBytes < minimumAudioBytes) {
@@ -49,7 +49,7 @@ for (const episode of episodes) {
   if (episode.aiAssisted !== true || typeof episode.explicit !== 'boolean') throw new Error(`${episode.id}: disclosure fields are invalid`)
 
   const chapterUrl = new URL(episode.chaptersUrl)
-  if (chapterUrl.hostname === 'liuminxin45.github.io') {
+  if (['liuminxin45.github.io', 'www.liuminxin.cn'].includes(chapterUrl.hostname)) {
     const chapterPath = path.join(publicDir, decodeURIComponent(chapterUrl.pathname).replace(/^\/+/, ''))
     const chapterDocument = JSON.parse(readFileSync(chapterPath, 'utf8'))
     const chapters = chapterDocument.chapters
