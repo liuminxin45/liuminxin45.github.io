@@ -4,11 +4,24 @@ import { prefersReducedMotion } from '@/lib/view-transitions'
 
 export default function useScrollReveal(routeKey: string) {
   useEffect(() => {
-    const elements = Array.from(document.querySelectorAll<HTMLElement>('[data-reveal]'))
+    const selector = '[data-reveal]'
+    const elements = Array.from(document.querySelectorAll<HTMLElement>(selector))
+
+    const revealElement = (element: HTMLElement) => element.classList.add('is-revealed')
+
+    const revealAddedElements = (node: Node) => {
+      if (!(node instanceof HTMLElement)) return
+      if (node.matches(selector)) revealElement(node)
+      node.querySelectorAll<HTMLElement>(selector).forEach(revealElement)
+    }
 
     if (prefersReducedMotion() || !('IntersectionObserver' in window)) {
-      elements.forEach(element => element.classList.add('is-revealed'))
-      return
+      elements.forEach(revealElement)
+      const mutationObserver = new MutationObserver(records => {
+        records.forEach(record => record.addedNodes.forEach(revealAddedElements))
+      })
+      mutationObserver.observe(document.body, { childList: true, subtree: true })
+      return () => mutationObserver.disconnect()
     }
 
     const observer = new IntersectionObserver(
@@ -31,8 +44,27 @@ export default function useScrollReveal(routeKey: string) {
       },
     )
 
-    elements.forEach(element => observer.observe(element))
+    const observed = new WeakSet<HTMLElement>()
+    const observeElement = (element: HTMLElement) => {
+      if (observed.has(element) || element.classList.contains('is-revealed')) return
+      observed.add(element)
+      observer.observe(element)
+    }
+    const observeAddedElements = (node: Node) => {
+      if (!(node instanceof HTMLElement)) return
+      if (node.matches(selector)) observeElement(node)
+      node.querySelectorAll<HTMLElement>(selector).forEach(observeElement)
+    }
 
-    return () => observer.disconnect()
+    elements.forEach(observeElement)
+    const mutationObserver = new MutationObserver(records => {
+      records.forEach(record => record.addedNodes.forEach(observeAddedElements))
+    })
+    mutationObserver.observe(document.body, { childList: true, subtree: true })
+
+    return () => {
+      mutationObserver.disconnect()
+      observer.disconnect()
+    }
   }, [routeKey])
 }

@@ -24,7 +24,9 @@ const FEED_URL = '/podflow-studio/feed.xml'
 function scrollToPlayer() {
   window.history.replaceState(null, '', '#episode-player')
   window.requestAnimationFrame(() => {
-    document.getElementById('episode-player')?.scrollIntoView({ block: 'start' })
+    const player = document.getElementById('episode-player')
+    player?.classList.add('is-revealed')
+    player?.scrollIntoView({ block: 'start' })
   })
 }
 
