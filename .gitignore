@@ -12,6 +12,11 @@ dist
 dist-ssr
 *.local
 
+# Generated from reviewed PodFlow GitHub Releases during each build.
+public/podflow-studio/episodes/
+public/podflow-studio/episodes.json
+public/podflow-studio/feed.xml
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

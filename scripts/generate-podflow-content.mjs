@@ -1,12 +1,11 @@
-import { createHash } from 'node:crypto'
-import { existsSync, readFileSync, renameSync, rmSync, statSync, writeFileSync } from 'node:fs'
+import { existsSync, readFileSync, renameSync, rmSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const publicDir = path.join(rootDir, 'public')
 const contentDir = path.join(publicDir, 'podflow-studio')
-const strict = process.argv.includes('--strict')
+const releaseRepository = 'liuminxin45/podflow-morning-feed'
 
 const channel = JSON.parse(readFileSync(path.join(contentDir, 'channel.json'), 'utf8'))
 const episodes = JSON.parse(readFileSync(path.join(contentDir, 'episodes.json'), 'utf8'))
@@ -22,7 +21,6 @@ for (const field of ['title', 'description', 'language', 'author', 'coverUrl', '
 }
 for (const field of ['coverUrl', 'siteUrl', 'feedUrl']) publicUrl(channel[field], `channel.${field}`)
 if (!Array.isArray(episodes)) throw new Error('episodes.json must be an array')
-if (strict && episodes.length !== 10) throw new Error(`strict showcase requires exactly 10 episodes; found ${episodes.length}`)
 
 const seen = new Set()
 for (const episode of episodes) {
@@ -33,7 +31,8 @@ for (const episode of episodes) {
   if (seen.has(episode.id)) throw new Error(`duplicate episode id: ${episode.id}`)
   seen.add(episode.id)
   for (const field of ['audioUrl', 'coverUrl', 'transcriptUrl', 'chaptersUrl']) publicUrl(episode[field], `episode.${field}`)
-  if (new URL(episode.audioUrl).hostname !== 'www.liuminxin.cn') throw new Error(`${episode.id}: audioUrl must use www.liuminxin.cn`)
+  const expectedAudioUrl = `https://github.com/${releaseRepository}/releases/download/${episode.id}/${episode.id}.mp3`
+  if (episode.audioUrl !== expectedAudioUrl) throw new Error(`${episode.id}: audioUrl must use the canonical GitHub Release asset`)
   if (episode.qualityProfile !== 'podflow_morning_v3') throw new Error(`${episode.id}: qualityProfile must be podflow_morning_v3`)
   if (!/^[a-f0-9]{64}$/.test(episode.audioSha256 || '')) throw new Error(`${episode.id}: audioSha256 is invalid`)
   if (!Number.isFinite(episode.durationSeconds) || episode.durationSeconds < 720 || episode.durationSeconds > 900) {
@@ -59,11 +58,9 @@ for (const episode of episodes) {
     if (credit.license !== 'CC0 1.0 Universal') throw new Error(`${episode.id}: music license must be CC0 1.0 Universal`)
   }
 
-  const audioPath = path.join(publicDir, decodeURIComponent(new URL(episode.audioUrl).pathname).replace(/^\/+/, ''))
-  if (!existsSync(audioPath)) throw new Error(`${episode.id}: same-origin MP3 is missing`)
-  if (statSync(audioPath).size !== episode.audioBytes) throw new Error(`${episode.id}: audioBytes does not match the MP3`)
-  const digest = createHash('sha256').update(readFileSync(audioPath)).digest('hex')
-  if (digest !== episode.audioSha256) throw new Error(`${episode.id}: audioSha256 does not match the MP3`)
+  if (episode.approval?.status !== 'approved' || episode.approval.audio_sha256 !== episode.audioSha256) {
+    throw new Error(`${episode.id}: current human approval is required`)
+  }
 
   const chapterUrl = new URL(episode.chaptersUrl)
   if (['liuminxin45.github.io', 'www.liuminxin.cn'].includes(chapterUrl.hostname)) {
@@ -77,15 +74,6 @@ for (const episode of episodes) {
         throw new Error(`${episode.id}: chapter boundary is invalid`)
       }
       previous = chapter.startTime
-    }
-  }
-}
-
-if (strict) {
-  const releaseDays = episodes.map(episode => Date.parse(`${episode.id.slice(0, 10)}T00:00:00Z`)).sort((a, b) => a - b)
-  for (let index = 1; index < releaseDays.length; index += 1) {
-    if (releaseDays[index] - releaseDays[index - 1] !== 86_400_000) {
-      throw new Error('strict showcase requires 10 consecutive daily episode IDs')
     }
   }
 }
@@ -133,4 +121,4 @@ ${items}
 const temporary = `${target}.tmp`
 writeFileSync(temporary, feed, 'utf8')
 renameSync(temporary, target)
-console.log(`[podflow] validated ${episodes.length} episode(s) and generated feed.xml${strict ? ' in strict mode' : ''}`)
+console.log(`[podflow] validated ${episodes.length} Release episode(s) and generated feed.xml`)
